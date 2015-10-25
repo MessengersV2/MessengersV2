@@ -367,19 +367,9 @@
     "plugins\\cordova-plugin-dialogs\\src\\wp\\NotificationBox.xaml",
     "res\\icons\\windows\\Square44x44Logo.scale-240.png",
     "res\\screens\\android\\screen-mdpi-portrait.png",
-    "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml",
-    "www\\controllers\\deliverycontroller.js",
-    "www\\controllers\\logincontroller.js",
-    "www\\controllers\\forgetpasswordcontroller.js"
+    "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml"
   ],
-  "deletedFilesIos": [
-    "www\\controllers\\DeliveryController.js~RF1eb7693e.TMP",
-    "www\\controllers\\DeliveryController.js~RF1eb5ed1d.TMP",
-    "www\\controllers\\DeliveryController.js~RF1ec5d7c9.TMP",
-    "www\\controllers\\DeliveryController.js~RF1eaa6e1e.TMP",
-    "www\\controllers\\CollectJoinedController.js~RF1ed3b433.TMP",
-    "www\\controllers\\CollectJoinedController.js~RF1ed488c0.TMP"
-  ],
+  "deletedFilesIos": [],
   "addedPluginsIos": [
     "cordova-plugin-camera@1.2.0",
     "cordova-plugin-dialogs@1.1.1",
@@ -388,8 +378,7 @@
   ],
   "deletedPluginsIos": [],
   "changedFiles": [
-    "www\\pages\\resetPass.html",
-    "www\\controllers\\forgetpasswordcontroller.js"
+    "www\\index.html"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
