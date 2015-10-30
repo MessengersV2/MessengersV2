@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מרוכזת מסירה</title>
+ 
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+  <script>
+$(function(){
+  $("#header").load("header.html");
+  $("#footer").load("footer.html");
+});
+</script>
+<body class="home">
+<div class="miyunPopup">
+        	<div class="shiyuchPopupInner">
+              
+   <div class="closePop"><img src="images/closePopup.png" alt=""/></div>           
+ <br>
+<strong>פריטים שנסרקו עד כה</strong>
+<ul class="deliverList">
+	<li>AV34567 
+        <ul class="popupItemsImg">
+        	 <li><img src="images/sampleItem.jpg" alt=""/><div class="deleteImageBtn"><a href="#"><img src="images/deleteImage.png" alt=""/></a></div></li>
+             <li><img src="images/sampleItem.jpg" alt=""/><div class="deleteImageBtn"><a href="#"><img src="images/deleteImage.png" alt=""/></a></div></li>
+             <li><img src="images/sampleItem.jpg" alt=""/><div class="deleteImageBtn"><a href="#"><img src="images/deleteImage.png" alt=""/></a></div></li>
+        </ul>
+    </li>
+    <li>FG59007
+        <ul class="popupItemsImg">
+                 <li><img src="images/sampleItem.jpg" alt=""/></li>
+                 <li><img src="images/sampleItem.jpg" alt=""/></li>
+                 <li><img src="images/AddThumb.jpg" alt=""/></li>
+         </ul>
+    </li>
+</ul>
+
+<div class="PopBtn"><a href="#">אישור</a></div>
+
+               
+              
+            </div>
+        </div>
+<div id="header"></div>
+<!--Content-->
+<script>
+		$(document).ready(function(){
+			$(".mainContent").css("height", window.innerHeight-($("#header").innerHeight()+160));
+		});
+		</script>
+ <div class="fluid topmenu">
+ <div class="topmenuItem topIcon5">מסירה</div>
+ <div class="topmenuItem topIcon6red active">מסירה מרוכזת</div>   
+</div>
+
+<div class="mainContent">
+
+<div class="BarcodeFields">
+<a href="#"><div class="BarcodeArea"></div></a>
+<form id="deliver">
+<div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
+    <input type="text" class="packageinput2" name="packageNum" placeholder="הקלד מספר פריט">
+    <a href="#"><img class="cameraBtn" src="images/AddBtn.jpg" alt=""/></a><a href="#"><img class="cameraBtn" src="images/CameraBtn.jpg" alt=""/></a><br>
+
+  </form>
+  <div class="totalScanItems">
+    <div class="totalScanItemsText">נסרקו עד כה</div>
+	<div class="totalScanItemsIcon2">20</div>
+    <div class="signature"><a href="#">חתימה</a></div>
+    <div class="totalScanItemsedit"><a href="#">הצג</a></div>
+ </div>
+ 
+</div>
+<div class="loginBtn"><a href="#">אישור</a></div>
+</div>
+<!--Footer-->
+<div id="footer"></div>
