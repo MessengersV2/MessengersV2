@@ -42,6 +42,10 @@ scotchApp.controller('deliverJoinedController', function ($scope) {
         }, onSuccess, onFailure);
     };
 
+    $scope.onSignature = function () {
+        $("#warpPopupSignature").show();
+    };
+
 
     function onSuccess(barcode) {
         currentBarcode = barcode;
@@ -59,6 +63,7 @@ scotchApp.controller('deliverJoinedController', function ($scope) {
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
         $("#warpPopup").hide();
+        $("#warpPopupSignature").hide();
         $('input').on('keyup', function (e) {
             var theEvent = e || window.event;
             var keyPressed = theEvent.keyCode || theEvent.which;
@@ -111,16 +116,24 @@ scotchApp.controller('deliverJoinedController', function ($scope) {
 
     //#region Camera Handler.
     $scope.onTakePicture = function () {
-        navigator.camera.getPicture(onCameraSuccess, onCameraFail,
-            {
-                quality: 40,
-                sourceType: Camera.PictureSourceType.CAMERA,
-                destinationType: Camera.DestinationType.DATA_URL,
-                saveToPhotoAlbum: false
-            });
+        if (indexPic >= 3)
+        {
+            navigator.notification.alert("הוספת כבר 3 תמונות שחרר...");
+        }
+        else {
+            navigator.camera.getPicture(onCameraSuccess, onCameraFail,
+           {
+               quality: 40,
+               sourceType: Camera.PictureSourceType.CAMERA,
+               destinationType: Camera.DestinationType.DATA_URL,
+               saveToPhotoAlbum: false
+           });
+        }
+       
     };
 
     function onCameraSuccess(imageData) {
+        indexPic++;
         currentImagesForBarCode.push(imageData);
     }
 
@@ -139,20 +152,37 @@ scotchApp.controller('deliverJoinedController', function ($scope) {
         var canvas = document.getElementById('pad');
         var context = canvas.getContext('2d');
         base64Signature = canvas.toDataURL().split(',')[1];
-        $("#warpPopup").hide();
+        $("#warpPopupSignature").hide();
     };
     //#endregion Get signature Base64
 
 
     $scope.onPlusClicked = function () {
+         index++;
+        $(".totalScanItemsIcon2").text(index.toString());
         var images = '';
         for (var i = 0; i < currentImagesForBarCode.length; i++) {
-            images += '<img class=liImage src=data:image/png;base64,' + currentImagesForBarCode[i] + ' height=100 width=100></img><br/>';
+            images+= ' <img class=liImage src=data:image/png;base64,' + currentImagesForBarCode[i] + ' height=100 width=100></img><br/>';
         }
         $(".deliverList").append(' <li class=liDynamic> <div> <div><lable>' + currentBarcode + '</lable><div><br/><div class=divImages>' + images + '</div></div></li>');
+      
+        indexPic = 0;
     };
 
     $scope.onDeliverJoined = function () {
+
+    };
+    
+    $scope.onXClickSignature = function () {
+        $("#warpPopupSignature").hide();
+    };
+
+    $scope.onRegister = function () {
+        window.location.href = "#/deliver";
+    };
+
+    $scope.onOk = function () {
+
 
     };
 

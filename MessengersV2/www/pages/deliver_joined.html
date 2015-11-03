@@ -20,23 +20,52 @@
         });
     </script>
     <style>
-        .liDynamic {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            font-size: 16px;
+        .pad {
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            height: 100%;
         }
+
+        .sigPad {
+            width: 100%;
+        }
+
+        .sigWrapper {
+            width: 100%;
+            height: 200px;
+        }
+
+        .signatureBox {
+            width: 100%;
+            height: 50%;
+        }
+    </style>
+    <style>
+       .liDynamic {
+margin-top: 10px;
+margin-bottom: 10px;
+font-size: 16px;
+position: relative;
+height: 150px;
+}
 
         .divImages {
             position: absolute;
             right: 0px;
             width: 300px;
-            border: 3px solid #8AC007;
             padding: 10px;
         }
 
-        .liImages{
-                margin-top: 5px;
+        .liImages {
+            margin-top: 5px;
             margin-bottom: 5px;
+        }
+
+        .deliverList {
+            height: 100px;
+            width: 300px;
+            overflow-y: scroll;
         }
     </style>
 
@@ -51,7 +80,7 @@
             });
         </script>
         <div class="fluid topmenu">
-            <div class="topmenuItem topIcon5">מסירה</div>
+            <div ng-click="onRegister()" class="topmenuItem topIcon5">מסירה</div>
             <div class="topmenuItem topIcon6red active">מסירה מרוכזת</div>
         </div>
 
@@ -67,14 +96,43 @@
                 </form>
                 <div class="totalScanItems">
                     <div class="totalScanItemsText">נסרקו עד כה</div>
-                    <div class="totalScanItemsIcon2">20</div>
-                    <div class="signature"><a href="#">חתימה</a></div>
+                    <div class="totalScanItemsIcon2">0</div>
+                    <div ng-click="onSignature()" class="signature"><a>חתימה</a></div>
                     <div ng-click="open()" class="totalScanItemsedit"><a>הצג</a></div>
                 </div>
 
             </div>
-            <div class="loginBtn"><a href="#">אישור</a></div>
+            <div ng-click="onOk()" class="loginBtn"><a href="#">אישור</a></div>
         </div>
+
+
+
+        <!-- Popup Signature-->
+        <div id="warpPopupSignature" style="display:none">
+            <div class="miyunPopup">
+                <div class="shiyuchPopupInner2">
+
+                    <div ng-click="onXClickSignature()" class="closePop"><img src="images/closePopup.png" alt=""></div>
+                    <br>
+                    <strong>חתימה</strong>
+                    <br>
+                    <input type="text" class="packageinput3" name="fname" placeholder="*שם פרטי">
+                    <input type="text" class="packageinput3" name="lname" placeholder="*שם משפחה">
+                    <div class="sigPad" id="sigPad">
+                        <div class="signatureBox">
+                            <div class="sig sigWrapper current" style="display: block;">
+                                <div class="typed" style="display: none;"></div>
+                                <canvas class="pad" id="pad"></canvas>
+                                <input type="hidden" placeholder="יש להחתים את הלקוח כאן" name="output" id="sigOutput" class="output" value="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loginBtn" ng-click="onSaveSignarture()"><a>אישור</a></div>
+
+                </div>
+            </div>
+        </div>
+
         <!--Popup-->
         <div id="warpPopup" style="display:none">
             <div class="miyunPopup">
@@ -82,7 +140,7 @@
                     <div ng-click="onXClick()" class="closePop"><img src="images/closePopup.png" alt="" /></div>
                     <br>
                     <strong>פריטים שנסרקו עד כה</strong>
-                    <ul class="deliverList" style="width: 300px; height: 200px; overflow: auto"></ul>
+                    <ul class="deliverList"></ul>
                     <div ng-click="onXClick()" class="PopBtn"><a>אישור</a></div>
 
                 </div>
