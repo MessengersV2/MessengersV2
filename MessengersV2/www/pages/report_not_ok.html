@@ -8,11 +8,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>איתור הזמנה</title>
- 
+<link href="css/boilerplate.css" rel="stylesheet" type="text/css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+ <link rel="stylesheet" href="js/css/jquery.sidr.dark.css">
 <!--[if lt IE 9]>
 <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-
+<script src="js/respond.min.js"></script>
+ <script src="js/jquery.js"></script>
+ <script src="js/jquery.sidr.min.js"></script>
   <script>
 $(function(){
   $("#header").load("header.html");
@@ -32,18 +36,17 @@ $(function(){
 <div class="mainContent">
 
 <div class="reportList">
-        <h2><strong>שהוחזרו למ"ר -</strong> 2.1.2016</h2>
+        <h2><strong>תאריך הדו"ח:</strong> 2.1.2016</h2>
         <ul>
-         <li><span>23</span>פריטים שעברו איסוף</li>
-         <li><span>5</span>פריטים שעברו חלוקה</li>
-         <li><span>12</span>פריטים שעברו חלוקה</li>
-         <li><span>1</span>פריטים לא מאוזנים</li>
+         <li><span>23 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו איסוף</li>
+         <li><span>5 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו חלוקה</li>
+         <li><span>12 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו חלוקה</li>
+         <li><span>1 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים לא מאוזנים</li>
         </ul>
          <div class="resultsTitleNotOk">הדו"ח אינו מאוזן</div>
-         <div class="totalScanItemsedit2"><a href="#">הצג</a></div>
     </div>
     
-<div class="loginBtn"><a href="#">אישור</a></div>
+<div class="loginBtn"><a href="#">סיום</a></div>
 </div>
 <!--Footer-->
 <div id="footer"></div>

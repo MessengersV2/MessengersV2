@@ -6,8 +6,8 @@ scotchApp.config(function ($routeProvider) {
 
         // route for the home page
         .when('/', {
-            templateUrl: 'pages/login.html',
-            controller: 'loginController'
+            templateUrl: 'pages/resetPass.html',
+            controller: 'forgetPassController'
         })
 
         // route for the about page

@@ -23,7 +23,7 @@ $(function(){
   $("#footer").load("footer.html");
 });
 </script>
-<body class="collect">
+<body class="home">
 <div id="header"></div>
 <!--Content-->
 <script>
@@ -31,21 +31,28 @@ $(function(){
 			$(".mainContent").css("height", window.innerHeight-($("#header").innerHeight()+160));
 		});
 		</script>
-
+ <div class="fluid topmenu">
+ <div class="topmenuItem topIcon1red active">רישום</div>
+ <div class="topmenuItem topIcon2">חלוקה</div>   
+</div>
 
 <div class="mainContent">
 
-<div class="reportList">
-        <h2><strong>תאריך הדו"ח - </strong> 2.1.2016</h2>
-        <ul>
-         <li><span>23 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו איסוף</li>
-         <li><span>5 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו חלוקה</li>
-         <li><span>12 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו חלוקה</li>
-         <li><span>0 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים לא מאוזנים</li>
-        </ul>
-         <div class="resultsTitleOk">הדו"ח מאוזן</div>
-    </div>
-    
+<div class="BarcodeFields">
+<a href="#"><div class="BarcodeArea"></div></a>
+<form id="deliver">
+<div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
+    <input type="text" class="packageinput2" name="packageNum" placeholder="הקלד מספר פריט">
+     <a href="#"><img class="cameraBtn" src="images/AddBtn.jpg" alt=""/></a>
+  </form>
+  <div class="totalScanItems">
+    <div class="totalScanItemsText">פריטים שנסרקו עד כה</div>
+	<div class="totalScanItemsIcon"><span>2</span></div>
+    <div class="totalScanItemsedit"><a href="#">הצג</a></div>
+ </div>
+ 
+</div>
+<div class="loginBtn"><a href="#">סיום</a></div>
 </div>
 <!--Footer-->
 <div id="footer"></div>

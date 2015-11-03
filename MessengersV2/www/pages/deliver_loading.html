@@ -7,7 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>איתור הזמנה</title>
+<title>מסירה</title>
 <link href="css/boilerplate.css" rel="stylesheet" type="text/css">
 <link href="css/style.css" rel="stylesheet" type="text/css">
  <link rel="stylesheet" href="js/css/jquery.sidr.dark.css">
@@ -23,7 +23,7 @@ $(function(){
   $("#footer").load("footer.html");
 });
 </script>
-<body class="collect">
+<body class="home">
 <div id="header"></div>
 <!--Content-->
 <script>
@@ -31,21 +31,16 @@ $(function(){
 			$(".mainContent").css("height", window.innerHeight-($("#header").innerHeight()+160));
 		});
 		</script>
-
+ <div class="fluid topmenu">
+ <div class="topmenuItem topIcon5red active">מסירה</div>
+ <div class="topmenuItem topIcon6">מסירה מרוכזת</div>   
+</div>
 
 <div class="mainContent">
 
-<div class="reportList">
-        <h2><strong>תאריך הדו"ח - </strong> 2.1.2016</h2>
-        <ul>
-         <li><span>23 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו איסוף</li>
-         <li><span>5 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו חלוקה</li>
-         <li><span>12 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים שעברו חלוקה</li>
-         <li><span>0 <a href="#"><img src="images/searchBtn2.jpg" alt=""/></a></span>פריטים לא מאוזנים</li>
-        </ul>
-         <div class="resultsTitleOk">הדו"ח מאוזן</div>
-    </div>
-    
+<div class="BarcodeFields">
+  <div class="loading"><img src="images/load.gif" alt=""/> </div></div>
+
 </div>
 <!--Footer-->
 <div id="footer"></div>

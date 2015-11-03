@@ -432,6 +432,11 @@ color:#41464c;
 	margin: 0 auto;
 	overflow: hidden;
 }
+.assignFields{
+	width: 96%;
+	margin: 0 auto;
+	overflow: hidden;
+}
 .BarcodeFields select {
 	border: 1px solid #b9b9b9;
 	text-align: right;
@@ -530,12 +535,12 @@ color:#41464c;
 .loginLinksLeft {
 	background: url(../images/support.jpg) no-repeat right -1px;
 	padding-right: 25px;
-	float: left;
+	float: left; margin-left:27px;
 }
 .loginLinksRight {
 	background: url(../images/ChangePass.jpg) no-repeat right -1px;
 	padding-right: 25px;
-	float: right;
+	float: right; margin-right:17px;
 }
 .loginLinksMiddle {
 	background: url(../images/support.jpg) no-repeat right -1px;
@@ -597,11 +602,19 @@ header {
 	line-height: 45px;
 	font-weight: 700;
 }
+.topmenuItem3 {
+	color: #828282;
+	text-align: center;
+	width: 33%;
+	float: right;
+	line-height: 45px;
+	font-weight: 700;
+}
 .topIcon1 {
 	background: url(../images/topIcon1.png) no-repeat 81%;
 }
 .topIcon1red {
-	background: url(../images/topIcon1Red.png) no-repeat 81%;
+	background: url(../images/topIcon1red.png) no-repeat 81%;
 }
 .topIcon2 {
 	background: url(../images/topIcon2.png) no-repeat 81%;
@@ -615,6 +628,12 @@ header {
 .topIcon3red {
 	background: url(../images/topIcon3Red.png) no-repeat 81%;
 }
+.topIcon3a {
+	background: url(../images/topIcon3.png) no-repeat right;
+}
+.topIcon3ared {
+	background: url(../images/topIcon3Red.png) no-repeat right;
+}
 .topIcon4 {
 	background: url(../images/topIcon4.png) no-repeat 96%;
 }
@@ -627,6 +646,12 @@ header {
 .topIcon5red {
 	background: url(../images/topIcon5Red.png) no-repeat 81%;
 }
+.topIcon5a {
+	background: url(../images/topIcon5.png) no-repeat right;
+}
+.topIcon5ared {
+	background: url(../images/topIcon5Red.png) no-repeat right;
+}
 .topIcon6 {
 	background: url(../images/topIcon6.png) no-repeat 100%;
 	font-size: 15px;
@@ -635,10 +660,28 @@ header {
 	background: url(../images/topIcon6red.png) no-repeat 100%;
 	font-size: 15px;
 }
+.topIcon7 {
+    background: url(../images/topIcon7.png) no-repeat 100%;
+    font-size: 16px;
+    line-height: 15px;
+    margin-top: 8px;
+}
+.topIcon7red {
+	background: url(../images/topIcon7red.png) no-repeat 100% -1px;
+	    font-size: 16px;
+    line-height: 15px;
+    margin-top: 8px;
+	    padding-bottom: 7px;
+}
+
+
 .active {
 	color: #df343c;
 }
 .topmenuItem.active {
+	border-bottom: 3px solid #df343c;
+}
+.topmenuItem3.active {
 	border-bottom: 3px solid #df343c;
 }
 .BarcodeArea {
@@ -719,7 +762,7 @@ header {
 }
 .signature {
 	width: 67px;
-	background: url(../images/signature.jpg) no-repeat right;
+	background: url(../images/signature.png) no-repeat right;
 	float: left;
 	line-height: 22px;
 	margin-top: 6px;
@@ -749,9 +792,22 @@ ul.deleteList li {
 	border-bottom: 1px solid #7b7b7b;
 }
 ul.deleteList {
-	padding: 0;
+	padding: 0; 
 }
 ul.deleteList li:first-child {
+	border-top: 1px solid #7b7b7b;
+}
+ul.deliverList li {
+	line-height: 51px;
+	text-align: right;
+	width: 100%;
+	list-style: none; float:right;
+	border-bottom: 1px solid #7b7b7b;
+}
+ul.deliverList {
+	padding: 0;float:left;
+}
+ul.deliverList li:first-child {
 	border-top: 1px solid #7b7b7b;
 }
 .closePop {
@@ -777,6 +833,15 @@ ul.deleteList li:first-child {
 	position: relative;
 	text-align: center;
 }
+.shiyuchPopupInner3 {
+	background: rgba(255,255,255,1.00);
+	width: 80%;
+	height: 38%;
+	margin: 125px auto;
+	padding: 20px;
+	position: relative;
+	text-align: right;
+}
 .collect .loginBtn {
 	margin: 62px auto 0;
 }
@@ -801,7 +866,7 @@ ul.deleteList li:first-child {
 }
 #weight_control_plate {
 	max-width: 100%;
-	overflow: hidden;
+	overflow: hidden; float:right;
 }
 #weight_control_plate input[type="radio"] {
 	position: absolute;
@@ -859,6 +924,10 @@ ul.deleteList li:first-child {
 	float: left;
 	margin-top: 16px;
 }
+.cameraBtn2 {
+	float: left;
+	margin-top: 16px; margin-left:5px;
+}
 .packageinput {
 	background: url(../images/packageIcon.jpg) no-repeat right 7px;
 	padding: 10px 13% 10px 3%;
@@ -866,7 +935,7 @@ ul.deleteList li:first-child {
 	width: 83%;
 }
 .packageinput2 {
-	background: url(../images/packageIcon.jpg) no-repeat right 7px;
+	background: url(../images/packageIcon.jpg) no-repeat right 7px #fff;
 	padding: 10px 13% 10px 3%;
 	margin: 10px 0;
 	width: 56%;
@@ -943,6 +1012,49 @@ ul.deleteList li:first-child {
 	width: 100%;
 	margin-top: 0px;
 }
+ul.popupItemsImg{ padding:0 !important; margin:10px 0 !important; float:left;}
+
+ul.popupItemsImg li{ float:left; width:33px !important; height:33px; margin-right:10px; border:0px; position:relative; line-height:24px;}
+.deleteImageBtn{ position:absolute; top:-13px; left:-6px;}
+
+.assign_top {
+	height: 39px;
+}
+.assign_top ul{ float:left; padding:0; margin:0;}
+.assign_top li{ list-style:none; float:right; font-size:14px; padding:10px 10px 10px 3px;}
+.assign_top1{  background: url(../images/assignIcon1.jpg) no-repeat right 12px; padding-right: 20px !important;}
+.assign_top2{  background: url(../images/assignIcon2.jpg) no-repeat right 12px; padding-right: 20px !important;}
+.assign_top3{  background: url(../images/assignIcon3.jpg) no-repeat right 12px; padding-right: 20px !important;}
+.assign_top li.assign_active1{ font-weight:700; background:url(../images/assignTri.png) no-repeat center 0px , url(../images/assignIcon1.jpg) no-repeat right 12px;}
+.assign_top li.assign_active2{ font-weight:700; background:url(../images/assignTri.png) no-repeat center 0px , url(../images/assignIcon2.jpg) no-repeat right 12px;}
+.assign_top li.assign_active3{ font-weight:700; background:url(../images/assignTri.png) no-repeat center 0px , url(../images/assignIcon3.jpg) no-repeat right 12px;}
+.assign_innergreyBlock{ background:#f4f4f4; width:100%; float:right;}
+.assign_topTable{ background:url(..//images/assignTopBG.jpg); height:32px;    line-height: 32px;}
+.assign_topTableRight{ float:right; width:45%;}
+.assign_topTableRight span{ padding-right:15px;} 
+.assign_topTableLeft{ float:right; width:55%;}
+.assign_empty{ font-size:24px; background:url(../images/assignOK.jpg) no-repeat center 50px; height:250px; text-align:center; margin-top:20px;}
+.legend{ float:right;    width: 93px;    margin-top: 7px;}
+.assign_innerTable li{ width:100%; border-bottom:1px solid #ccc; list-style:none; overflow:hidden;}
+.assign_innerTableRight{ float:right; width:45%; line-height:55px; height:55px;}
+.assign_innrtTableLeft{    float: right;    width: 45%;    line-height: 20px;    height: 50px;    padding-top: 10px;}
+.assign_innerTableLeft2{ width:10%; float:left; margin-top:17px;}
+.assign_innrtTableLeft strong{ font-size:18px;}
+.assign_innerTableRight .red{ color:#ca151e;}
+.assign_innerTableRight .green{ color:#319616;}
+.assign_innerTableRight .yellow{ color:#ffad57;}
+.assign_innerDetails{ width:100%; float:right;}
+.assign_innrtDetailsRight{    float: right; width: 37%; padding-right: 30px; background:url(../images/greyLocation.jpg) no-repeat right; font-size:12px; margin-top:15px;}
+.assign_innrtDetailsRight strong{ font-size:14px;}
+.assign_innrtDetailsLeft{    float: left;    width: 37%;    line-height: 20px;   padding-right: 30px; background:url(../images/greyPhone.jpg) no-repeat right; font-size:12px; margin-top:15px;}
+.assign_innrtDetailsLeft strong{font-size:14px;}
+
+.assign_innerTableRight .collect{ background: url(../images/assignIcon1.jpg) no-repeat right 19px; padding-right: 21px;}
+.assign_innerTableRight .deliver{ background: url(../images/assignIcon2.jpg) no-repeat right 19px; padding-right: 21px;}
+.loading{ margin:100px auto; width:200px; text-align:center; }
+.loginpopTitle{ width:90%; background:url(../images/reportNotOk.jpg) no-repeat right; padding-right:30px; font-size:24px; font-weight:400; text-align:right; border-bottom:1px solid #9E9E9E; margin-bottom:15px;}
+.red{ color:#ca151e;}
+.shiyuchPopupInner3 .totalScanItemsedit{ margin-top:0;}
 
 @media only screen and (min-width: 481px) {
 .gridContainer {

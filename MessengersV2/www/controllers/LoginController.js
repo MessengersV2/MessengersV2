@@ -4,58 +4,96 @@
     $scope.login = function () {
         login();
     };
+    var serverUrl = "https://cg.israelpost.co.il:9464/WcfShlihimPhoneDocs";
+
+    function createLoginXML(userId, password) {
+
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>03/11/2015 09:18:11</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>038243549</USERID><PWD>123456AC@</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
+
+
+
+
+
+        //var xml = "<HEADER><MSGVER>1</MSGVER><CODE/><SENDTIME></HEADER><DATA><USERID>23</USERID><PWD>TEST</PWD></DATA>";
+        console.log('XML SENDING TO LOGIN: ' + xml);
+        return xml;
+    }
+
+    function login() {
+
+        var userId = "038243549";
+        //$("#username").val();
+        var password = "123456";
+        //$("#password").val();
+        var soapMessage = createLoginXML(userId, password);
+        var x = 10;
+        $
+           .ajax(
+                         {
+                             url: serverUrl,
+                             dataType: "xml",
+                             //dataType: 'json',
+                             type: "POST",
+                             async: false,
+                             contentType: "text/xml;charset=utf-8",
+                             headers: {
+                                 "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                             },
+                             crossDomain: true,
+                             data: soapMessage,
+                             timeout: 30000 //30 seconds timeout
+                         }).done(function (data) {
+                             if (data != null) {
+                                 var parser = new DOMParser();
+                                 var xmlDoc = parser.parseFromString(data.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[1].firstChild.nodeValue, "text/xml");
+                                 var firstChild = xmlDoc.childNodes[0];
+                                 var secondChild = firstChild.childNodes[0];
+                                 var thirdChild = secondChild.childNodes[1];
+                                 var apprvCode = thirdChild.childNodes[0].textContent;
+                                 var reason = thirdChild.childNodes[1].textContent;
+
+                                 if (apprvCode == "5") {
+                                     navigator.notification.alert(reason);
+
+                                 }
+                                 else if (apprvCode == "11") {
+                                     navigator.notification.alert(reason);
+                                 }
+                                 else if (apprvCode == "12") {
+                                     navigator.notification.alert(reason);
+                                 }
+                                 else if (apprvCode == "13") {
+                                     navigator.notification.alert(reason);
+                                 }
+                                 else if (apprvCode == "38") {
+                                     navigator.notification.alert(reason);
+                                 }
+                                 else if (apprvCode == "37") {
+                                     navigator.notification.alert(reason);
+
+                                 }
+                                 else if (apprvCode == "1") {
+                                     navigator.notification.alert(reason);
+                                     window.location.href = "#/resetPass";
+                                 }
+                                 else if (apprvCode == "3") {
+                                     navigator.notification.alert(reason);
+                                 }
+                                 else {
+                                     
+                                     window.location.href = "#/collect";
+                                 }
+                             }
+                             else {
+                                 navigator.notification.alert('יש תקלה בשרת');
+                             }
+
+                         }).fail(function (jqXHR, textStatus, thrownError) {
+                             navigator.notification.alert('Fail!');
+                         });
+
+    }
+
+
 });
 
-var serverUrl = "https://193.46.64.172:9464/WcfShlihimPhoneDocs";
-
-function createLoginSoapMessage(username, password) {
-
-    var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">\
-   <soapenv:Header/>\
-   <soapenv:Body>\
-      <tem:ServerMessage>\
-         <!--Optional:-->\
-         <tem:xml><DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>19/10/2015 14:52:36</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>1</VER></HEADER><DATA><USERID>' + username + '</USERID><PWD>' + password + '</PWD></DATA></MSG></DATA></tem:xml>\
-      </tem:ServerMessage>\
-   </soapenv:Body>\
-</soapenv:Envelope>';
-
-
-
-    //var xml = "<HEADER><MSGVER>1</MSGVER><CODE/><SENDTIME></HEADER><DATA><USERID>23</USERID><PWD>TEST</PWD></DATA>";
-    console.log('XML SENDING TO LOGIN: ' + xml);
-    return xml;
-}
-
-
-
-function login() {
-
-    window.location.href = "#/collect";
-    //var soapMessage = createLoginSoapMessage("", "");
-    //$
-    //   .ajax(
-    //                 {
-    //                     url: serverUrl,
-    //                     dataType: "xml",
-    //                     //dataType: 'json',
-    //                     type: "POST",
-    //                     async: false,
-    //                     contentType: "text/xml;charset=utf-8",
-    //                     headers: {
-    //                         "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
-    //                     },
-    //                     crossDomain: true,
-    //                     data: soapMessage,
-    //                     timeout: 30000 //30 seconds timeout
-    //                 }).done(function (data) {
-    //                     //location.path = '#/deliver';
-    //                     window.location.href = "#/deliver";
-    //                 }).fail(function (jqXHR, textStatus, thrownError) {
-    //                     console.log('login failed: ' + thrownError);
-    //                     var returnObject = {};
-    //                     returnObject.errorCode = 2;
-    //                     localStorage.setItem("errorCode", returnObject.errorCode);
-    //                 });
-
-}

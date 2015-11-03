@@ -4,7 +4,7 @@
 // and then run "window.location.reload()" in the JavaScript Console.
 
 
-var serverUrl = "https://193.46.64.172:9464/WcfShlihimPhoneDocs";
+var serverUrl = "https://cg.israelpost.co.il:9464/WcfShlihimPhoneDocs";
 
 (function () {
     "use strict";
