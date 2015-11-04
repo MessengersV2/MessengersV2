@@ -13,11 +13,11 @@ function createLoginSoapMessage(userid,oldpass,newpass) {
 }
 function resetPass() {
 
-    var oldpass = "one1one";
+    var oldpass = "123456";
         //$(".oldpass").val();
     var userid = "038243549";
         //$(".userinput").val();
-    var newpass = "1234bbb"
+    var newpass = "boaz1234"
         //$(".passinput").val();
 
     var soapMessage = createLoginSoapMessage(userid, oldpass, newpass)
@@ -43,7 +43,7 @@ function resetPass() {
                              var apprv = xmlDoc.firstChild.firstChild.childNodes[1].childNodes[0].innerHTML;
                              var reason = xmlDoc.firstChild.firstChild.childNodes[1].childNodes[1].innerHTML;
 
-                             if (apprvCode == "1") {
+                             if (apprv == "1") {
                                  navigator.notification.alert(reason);
                              }
                              else {

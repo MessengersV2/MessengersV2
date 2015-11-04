@@ -433,17 +433,17 @@
     "res\\screens\\android\\screen-mdpi-portrait.png",
     "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml",
     "www\\scripts\\respond.js",
-    "www\\controllers\\ForgetPasswordController.js~RF22e58378.TMP",
-    "www\\pages\\resetPass.html~RF22e86a5d.TMP",
-    "www\\controllers\\ForgetPasswordController.js~RF22ef5d43.TMP"
+    "www\\scripts\\header.js",
+    "www\\controllers\\ReportOkController.js",
+    "www\\script.js~RF95e4fc5.TMP",
+    "www\\pages\\header.html~RF96423d6.TMP",
+    "www\\controllers\\LoginController.js~RF975f9ca.TMP",
+    "www\\controllers\\RegisterController.js",
+    "www\\script.js~RFa7cad07.TMP",
+    "www\\controllers\\DistributionController.js~RFaa671dc.TMP",
+    "www\\controllers\\DistributionController.js~RFaaaa26e.TMP"
   ],
-  "deletedFilesIos": [
-    "www\\controllers\\LoginController.js~RF22a5c3ff.TMP",
-    "www\\controllers\\LoginController.js~RF229ed473.TMP",
-    "www\\controllers\\LoginController.js~RF229fbb29.TMP",
-    "www\\controllers\\LoginController.js~RF22acd8d7.TMP",
-    "www\\controllers\\LoginController.js~RF22add934.TMP"
-  ],
+  "deletedFilesIos": [],
   "addedPluginsIos": [
     "cordova-plugin-camera@1.2.0",
     "cordova-plugin-dialogs@1.1.1",

@@ -6,8 +6,8 @@ scotchApp.config(function ($routeProvider) {
 
         // route for the home page
         .when('/', {
-            templateUrl: 'pages/resetPass.html',
-            controller: 'forgetPassController'
+            templateUrl: 'pages/login.html',
+            controller: 'loginController'
         })
 
         // route for the about page
@@ -51,6 +51,17 @@ scotchApp.config(function ($routeProvider) {
      .when('/weightPallet', {
          templateUrl: 'pages/weight_control_item.html',
          controller: 'weightPalletController'
+     })
+
+     .when('/balanceOk', {
+         templateUrl: 'pages/report_ok.html',
+         controller: 'reportOkController'
+     })
+
+
+     .when('/register', {
+         templateUrl: 'pages/register.html',
+         controller: 'registerController'
      })
 
 

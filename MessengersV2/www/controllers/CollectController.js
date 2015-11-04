@@ -7,7 +7,7 @@
 
 
     $scope.onCollectAll = function () {
-        window.location.href = "#/collect_joined";
+        location.href = "#/collect_joined";
     };
 
     //############################################################ On Clicks Finish ############################################################

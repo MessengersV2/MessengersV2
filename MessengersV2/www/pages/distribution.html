@@ -27,7 +27,6 @@
         });
     </script>
 
-
     <style>
         #warpList {
             height: 140px;
@@ -55,7 +54,7 @@
 
     <!--Slide Menu -->
     <div class="fluid topmenu">
-        <div class="topmenuItem topIcon1">רישום</div>
+        <div ng-click="onRegister()" class="topmenuItem topIcon1">רישום</div>
         <div class="topmenuItem topIcon2red active">חלוקה</div>
     </div>
 
@@ -65,8 +64,9 @@
         <div class="BarcodeFields">
             <a><div class="BarcodeArea" ng-click="onScan()" id="deliver_startScan"></div></a>
             <form id="deliver">
-                <input type="text" ng-model="inputVal" class="packageinput" id="packageinput" name="packageNum" placeholder="הקלד מספר פריט">  
-                <div class="greyText">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
+                <div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
+                <input type="text" class="packageinput2" name="packageNum" placeholder="הקלד מספר פריט">
+                <a ng-click="onAddBarCode()"><img class="cameraBtn" src="images/AddBtn.jpg" alt="" /></a>
             </form>
             <div class="totalScanItems">
                 <div class="totalScanItemsText">פריטים שנסרקו עד כה</div>

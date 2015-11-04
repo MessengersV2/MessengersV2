@@ -8,18 +8,13 @@
 
     function createLoginXML(userId, password) {
 
-        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>03/11/2015 09:18:11</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>038243549</USERID><PWD>123456AC@</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
-
-
-
-
-
-        //var xml = "<HEADER><MSGVER>1</MSGVER><CODE/><SENDTIME></HEADER><DATA><USERID>23</USERID><PWD>TEST</PWD></DATA>";
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>03/11/2015 09:18:11</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>'+ userId + '</USERID><PWD>'+password+'</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
         console.log('XML SENDING TO LOGIN: ' + xml);
         return xml;
     }
 
     function login() {
+
 
         var userId = "038243549";
         //$("#username").val();
@@ -74,17 +69,27 @@
                                  }
                                  else if (apprvCode == "1") {
                                      navigator.notification.alert(reason);
-                                     window.location.href = "#/resetPass";
+                                     location.href = "#/resetPass";
                                  }
                                  else if (apprvCode == "3") {
                                      navigator.notification.alert(reason);
                                  }
                                  else {
-                                     
-                                     window.location.href = "#/collect";
+
+                                     var USRKEY = thirdChild.childNodes[2].textContent;
+                                     localStorage.setItem("USRKEY", USRKEY);
+                                     var USR = thirdChild.childNodes[3].textContent;
+                                     localStorage.setItem("USR", USR);
+                                     var MOKED = thirdChild.childNodes[6].textContent;
+                                     localStorage.setItem("MOKED", MOKED);
+                                     var RLSCODE = thirdChild.childNodes[7].textContent;
+                                     localStorage.setItem("RLSCODE", RLSCODE);
+                                     location.href = "#/collect";
                                  }
                              }
                              else {
+                              
+
                                  navigator.notification.alert('יש תקלה בשרת');
                              }
 
