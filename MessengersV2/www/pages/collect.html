@@ -44,5 +44,21 @@ $(function(){
 </div>
 <div ng-click="onAddBarcode()" id="loginBtn" class="loginBtn"><a>אישור</a></div>
 </div>
+    <!--Popup Menu  -->
+    <div id="warpPopup">
+        <div class="miyunPopup">
+            <div class="shiyuchPopupInner">
+                <div ng-click="onXClick()" class="closePop"><img src="images/closePopup.png" alt="" /></div>
+                <br>
+                <strong>פריטים שנסרקו עד כה</strong>
+                <div id="warpList">
+                    <ul style="overflow: auto" id="deleteList" class="deleteList"></ul>
+                </div>
+                <div id="warpBtn">
+                    <div ng-click="onXClick()" class="loginBtn"><a>אישור</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
 <!--Footer-->
 <div id="footer"></div>

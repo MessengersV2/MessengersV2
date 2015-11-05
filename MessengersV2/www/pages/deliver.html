@@ -86,10 +86,14 @@
                 <input type="text" class="packageinput2" name="packageNum" id="packageinput" placeholder="הקלד מספר פריט">
                 <img ng-click="onTakePicture()" class="cameraBtn" id="takePic" src="images/CameraBtn.jpg" alt="" /><br>
                 <select class="area" name="area">
-                    <option class="areainput">קוד מסירה/אי מסירה</option>
-                    <option class="areainput">אופציה 1</option>
-                    <option class="areainput">אופציה 2</option>
-                    <option class="areainput">אופציה 3</option>
+                    <option class="areainput" value="-1">קוד מסירה/אי מסירה</option>
+                    <option class="areainput" value="01">נמסר</option>
+                    <option class="areainput"value="07">נמסר ביחידת דואר</option>
+                    <option class="areainput" value="70">מסירה ערב</option>
+                    <option class="areainput" value="91">נמסר בתיבת מכתבים</option>
+                    <option class="areainput" value="92">נמסר מתחת לדלת</option>
+                    <option class="areainput" value="93">הודבק על הדלת</option>
+                    <option class="areainput" value="99">מסירה שנייה</option>
                 </select>
             </form>
             <div class="totalScanItems">
@@ -97,7 +101,7 @@
             </div>
 
         </div>
-        <div class="loginBtn"><a href="#">אישור</a></div>
+        <div ng-click="onOkPressed()" class="loginBtn"><a>אישור</a></div>
     </div>
 
     <!-- PopUp-->

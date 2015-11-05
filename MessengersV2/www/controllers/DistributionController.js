@@ -99,95 +99,70 @@ scotchApp.controller('distributionController', function ($scope) {
     };
 
     $scope.onAddBarCode = function () {
-        
-        
-        var soapMessage = CreateSaveItem4XML(currentBarcode);
-        var x = 10;
-        $
-           .ajax(
-                         {
-                             url: serverUrl,
-                             dataType: "xml",
-                             //dataType: 'json',
-                             type: "POST",
-                             async: false,
-                             contentType: "text/xml;charset=utf-8",
-                             headers: {
-                                 "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
-                             },
-                             crossDomain: true,
-                             data: soapMessage,
-                             timeout: 30000 //30 seconds timeout
-                         }).done(function (data) {
-                             if (data != null) {
-                                 var parser = new DOMParser();
-                                 var xmlDoc = parser.parseFromString(data.childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[0].childNodes[1].firstChild.nodeValue, "text/xml");
-                                 var firstChild = xmlDoc.childNodes[0];
-                                 var secondChild = firstChild.childNodes[0];
-                                 var thirdChild = secondChild.childNodes[1];
-                                 var apprvCode = thirdChild.childNodes[0].textContent;
-                                 var reason = thirdChild.childNodes[1].textContent;
-
-                                 barcodes[index] = currentBarcode;
-                                 index++;
-                                 $("#deleteList").append('<li>' + currentBarcode + '</li>');
-                                 $('#barcodeCount').text(index);
-
-
-                                 if (apprvCode == "5") {
-                                     navigator.notification.alert(reason);
-
-                                 }
-                                 else if (apprvCode == "11") {
-                                     navigator.notification.alert(reason);
-                                 }
-                                 else if (apprvCode == "12") {
-                                     navigator.notification.alert(reason);
-                                 }
-                                 else if (apprvCode == "13") {
-                                     navigator.notification.alert(reason);
-                                 }
-                                 else if (apprvCode == "38") {
-                                     navigator.notification.alert(reason);
-                                 }
-                                 else if (apprvCode == "37") {
-                                     navigator.notification.alert(reason);
-
-                                 }
-                                 else if (apprvCode == "1") {
-                                     navigator.notification.alert(reason);
-                                     location.href = "#/resetPass";
-                                 }
-                                 else if (apprvCode == "3") {
-                                     navigator.notification.alert(reason);
-                                 }
-                                 else {
-
-                                     var USRKEY = thirdChild.childNodes[2].textContent;
-                                     localStorage.setItem("USRKEY", USRKEY);
-                                     var USR = thirdChild.childNodes[3].textContent;
-                                     localStorage.setItem("USR", USR);
-                                     var MOKED = thirdChild.childNodes[6].textContent;
-                                     localStorage.setItem("MOKED", MOKED);
-                                     var RLSCODE = thirdChild.childNodes[7].textContent;
-                                     localStorage.setItem("RLSCODE", RLSCODE);
-                                     location.href = "#/collect";
-                                 }
-                             }
-                             else {
+        if (currentBarcode == '') {
+            navigator.notification.alert('יש לסרוק ברקוד');
+        }
+        else {
+            var soapMessage = CreateSaveItem4XML(currentBarcode);
+            var x = 10;
+            $.ajax(
+                    {
+                        url: serverUrl,
+                        dataType: "xml",
+                        //dataType: 'json',
+                        type: "POST",
+                        async: false,
+                        contentType: "text/xml;charset=utf-8",
+                        headers: {
+                            "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                        },
+                        crossDomain: true,
+                        data: soapMessage,
+                        timeout: 30000 //30 seconds timeout
+                    }).done(function (data) {
+                        if (data != null) {
+                            var parser = new DOMParser();
+                            var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
+                            var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
+                            var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+                            if (result == "0") {
+                                barcodes[index] = currentBarcode;
+                                index++;
+                                $("#deleteList").append('<li>' + currentBarcode + '</li>');
+                                $('#barcodeCount').text(index);
+                                $(".packageinput2").val('');
+                            }
+                            else {
+                                navigator.notification.alert(message);
+                            }
+                        }
+                        else {
 
 
-                                 navigator.notification.alert('יש תקלה בשרת');
-                             }
+                            navigator.notification.alert('יש תקלה בשרת');
+                        }
 
-                         }).fail(function (jqXHR, textStatus, thrownError) {
-                             navigator.notification.alert('Fail!');
-                         });
-
+                    }).fail(function (jqXHR, textStatus, thrownError) {
+                        navigator.notification.alert('Fail!');
+                    });
+        }
     };
 
-    function CreateSaveItem4XML(barcode) {
+    function getCurrentDate() {
+        //04/11/2015 14:53:34
+        var date = new Date();
+        var day = date.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return str;
+    };
 
+
+
+    function CreateSaveItem4XML(barcode) {
+        var date = getCurrentDate();
         var USRKEY = localStorage.getItem("USRKEY");
         var USR = localStorage.getItem("USR");
         var MOKED = localStorage.getItem("MOKED");
@@ -198,7 +173,7 @@ scotchApp.controller('distributionController', function ($scope) {
    <soapenv:Body>\
       <tem:ServerMessage>\
          <!--Optional:-->\
-         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>04/11/2015 14:53:34</SENDTIME><GPS/><USRKEY>'+USRKEY+'</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>EE111111111IL</BC><CRDT>{0}</CRDT><DST>0</DST><DELIV>1</DELIV><USR>'+USR+'</USR><MOKED>'+MOKED+'</MOKED><ACT>4</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><ACT>4</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
          </tem:ServerMessage>\
    </soapenv:Body>\
 </soapenv:Envelope>';
@@ -207,7 +182,7 @@ scotchApp.controller('distributionController', function ($scope) {
 
 
     $scope.onOkPressed = function () {
-            };
+    };
 
     $scope.onRegister = function () {
         location.href = "#/register"

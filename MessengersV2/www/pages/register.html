@@ -30,20 +30,39 @@
 <div class="mainContent">
 
 <div class="BarcodeFields">
-<a ng-click="onScan()" href="#"><div class="BarcodeArea"></div></a>
+<a ng-click="onScan()"><div class="BarcodeArea"></div></a>
 <form id="deliver">
 <div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
      <input type="text" class="packageinput2" name="packageNum" placeholder="הקלד מספר פריט">
-     <a href="#"><img class="cameraBtn" src="images/AddBtn.jpg" alt=""/></a>
+     <a ng-click="onAddBarCode()"><img class="cameraBtn" src="images/AddBtn.jpg" alt=""/></a>
   </form>
   <div class="totalScanItems">
     <div class="totalScanItemsText">פריטים שנסרקו עד כה</div>
-	<div class="totalScanItemsIcon"><span>2</span></div>
-    <div class="totalScanItemsedit"><a href="#">הצג</a></div>
+      <div class="totalScanItemsIcon"><span id="barcodeCount">0</span></div>
+      <div class="totalScanItemsedit" ng-click="open()"><a>הצג</a></div>
  </div>
  
 </div>
 <div class="loginBtn"><a href="#">סיום</a></div>
 </div>
+    <!--Popup Menu  -->
+    <div id="warpPopup">
+        <div class="miyunPopup">
+            <div class="shiyuchPopupInner">
+                <div ng-click="onXClick()" class="closePop"><img src="images/closePopup.png" alt="" /></div>
+                <br>
+                <strong>פריטים שנסרקו עד כה</strong>
+                <div id="warpList">
+                    <ul style="overflow: auto" id="deleteList" class="deleteList"></ul>
+                </div>
+                <div id="warpBtn">
+                    <div ng-click="onXClick()" class="loginBtn"><a>אישור</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 <!--Footer-->
 <div id="footer"></div>

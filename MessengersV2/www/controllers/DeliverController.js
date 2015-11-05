@@ -84,38 +84,193 @@ scotchApp.controller('deliverController', function ($scope) {
     //#endregion On X Click
 
     //#region On Add Barcode
+
+    function getCurrentDate() {
+        //04/11/2015 14:53:34
+        var date = new Date();
+        var day = date.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return str;
+    };
+
+
+    function CreateXml(sig,mesira, barcode, ph1, ph2, ph3) {
+        var date = getCurrentDate();
+        var USRKEY = localStorage.getItem("USRKEY");
+        var USR = localStorage.getItem("USR");
+        var MOKED = localStorage.getItem("MOKED");
+        //var RLSCODE = localStorage.getItem("RLSCODE");
+
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">\
+<soapenv:Header/>\
+<soapenv:Body>\
+<tem:ServerMessage>\
+<!--Optional:-->\
+<tem:xml><![CDATA[\
+<DATA>\
+<MSG><SYSTEMID>1</SYSTEMID>\
+<HEADER>\
+<MSGVER>1</MSGVER>\
+<CODE>3</CODE>\
+<SENDTIME>'+ date + '</SENDTIME>\
+<GPS/>\
+<USRKEY>'+ USRKEY + '</USRKEY>\
+<DEVKEY>9999</DEVKEY>\
+<VER>2</VER>\
+</HEADER>\
+<DATA>\
+<ITEM>\
+<ITEMID></ITEMID>\
+<BC>'+ barcode + '</BC>\
+<CRDT>03/10/2012 09:43:52</CRDT>\
+<DST>0</DST>\
+<DELIV>'+ mesira + '</DELIV>\
+<USR>'+ USR + '</USR>\
+<MOKED>'+ MOKED + '</MOKED>\
+<ACT>9</ACT>\
+<MEM>0</MEM>\
+<DEVKEY>9999</DEVKEY>\
+<FN>klj</FN>\
+<LN>jkl</LN>\
+<SIG>'+sig+'</SIG>\
+<PH1>'+ ph1 + '</PH1>\
+<PH2>'+ ph2 + '</PH2>\
+<PH3>'+ ph3 + '</PH3>\
+<MEM></MEM>\
+<RQ></RQ>\
+<ORG></ORG>\
+<CRT></CRT>\
+<PLT></PLT>\
+</ITEM>\
+<BATCH></BATCH>\
+</DATA>\
+</MSG>\
+</DATA>]]>\
+</tem:xml>\
+</tem:ServerMessage>\
+</soapenv:Body>\
+</soapenv:Envelope>';
+        return xml;
+
+    }
+
+
+
     $scope.onAddBarCode = function () {
-        currentBarcode = $('#packageinput').val();
-        barcodes[index] = currentBarcode;
-        index++;
-        $("#deleteList").append('<li>' + currentBarcode + '</li>');
-        $('#barcodeCount').text(index);
+
+
     };
     //#endregion   On Add Barcode
 
     //#region On Send To Server Request
+
     $scope.onOkPressed = function () {
-        if ($("#dropDownMenuKategorie")[0].selectedIndex == 0){
-            navigator.notification.alert('יש לבחור קוד מסירה \ אי מסירה');
-        }
-        else if ($('.packageinput2').value = '' || $('.packageinput2').value == null) {
-            navigator.notification.alert('יש להכניס ברקוד');
+        var mesira = $(".area").val();
+        if (mesira == "-1") {
+            navigator.notification.alert('יש לבחור קוד מסירה');
         }
         else {
-            navigator.notification.alert('Sending request to server.');
+            if (currentBarcode == '') {
+                navigator.notification.alert('יש לסרוק ברקוד');
+            }
+            else {
+                var ph1 = '';
+                var ph2 = '';
+                var ph3 = '';
+                var sig = '';
+                if (base64Signature != null) {
+                    sig = base64Signature;
+                }
+                for(var i = 0;i <pictures.length;i++){
+                    if (i == 0) {
+                        ph1 = pictures[i];
+                    }
+                    else if (i == 1) {
+                        ph2 = pictures[i];
+                    }
+                    else {
+                        ph3 = pictures[i];
+                    }
+                }
+                var xml = CreateXml(sig,mesira, currentBarcode, ph1, ph2, ph3);
+                makeDeliverRequest(xml);
+            }
         }
+
+
     };
+
+    function makeDeliverRequest(xml) {
+        var x = 10;
+         $
+           .ajax(
+                         {
+                             url: serverUrl,
+                             dataType: "xml",
+                             //dataType: 'json',
+                             type: "POST",
+                             async: false,
+                             contentType: "text/xml;charset=utf-8",
+                             headers: {
+                                 "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                             },
+                             crossDomain: true,
+                             data: xml,
+                             timeout: 30000 //30 seconds timeout
+                         }).done(function (data) {
+                             if (data != null) {
+                                 var parser = new DOMParser();
+                                 var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.nodeValue, "text/xml");
+                                 var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
+                                 var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+                                 if (result == "0") {
+                                     pictures = [];
+                                     currentBarcode = '';
+                                     $('.area').val('-1');
+                                     base64Signature = '';
+                                     $(".packageinput2").val('');
+                                     $("#warpPopup").load(location.href + " #warpPopup");
+                                 }
+                                 else {
+                                     navigator.notification.alert(message);
+                                 }
+                             }
+                             else {
+
+
+                                 navigator.notification.alert('יש תקלה בשרת');
+                             }
+
+                         }).fail(function (jqXHR, textStatus, thrownError) {
+                             navigator.notification.alert('Fail!');
+                         });
+    }
+
+
     //#endregion AutoComplete JS
+
+
+
+
+
 
     //#region Camera Handler.
     $scope.onTakePicture = function () {
-        navigator.camera.getPicture(onCameraSuccess, onCameraFail,
-            {
-                quality: 40,
-                sourceType: Camera.PictureSourceType.CAMERA,
-                destinationType: Camera.DestinationType.DATA_URL,
-                saveToPhotoAlbum: false
-            });
+        if (indexPic >= 2) {
+            navigator.notification.alert('נלקחו כבר 3 תמונות');
+        }
+        else {
+            navigator.camera.getPicture(onCameraSuccess, onCameraFail,
+                {
+                    quality: 40,
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    destinationType: Camera.DestinationType.DATA_URL,
+                    saveToPhotoAlbum: false
+                });
+        }
     };
 
     function onCameraSuccess(imageData) {
@@ -124,9 +279,6 @@ scotchApp.controller('deliverController', function ($scope) {
         pictures[indexPic] = imageData;
         indexPic++;
         navigator.notification.alert("Got Picture!");
-        //image1.style.visibilty="visible";
-        //image1.style.display='block';
-        //image1.src = "data:image/jpeg;base64," + imageData;
     }
 
     function onCameraFail(message) {
