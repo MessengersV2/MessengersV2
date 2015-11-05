@@ -33,16 +33,39 @@
         </div>
 
         <div class="mainContent">
-
-            <div class="BarcodeFields" >
+            <div class="BarcodeFields">
                 <form id="collect_joined">
                     <input type="text" class="packageinput4" name="packageNum" placeholder="מספר מנוי">
                     <a ng-click="scan()"><div class="BarcodeArea"></div></a>
                     <div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
-                    <input type="text" ng-model="inputVal" class="packageinput" name="packageNum" placeholder="הקלד מספר פריט"><br>
+                    <input type="text" ng-model="inputVal" class="packageinput2" name="packageNum" placeholder="הקלד מספר פריט">
+                    <a ng-click="onAddBarcode()"><img class="cameraBtn" src="images/AddBtn.jpg" alt="" /></a><br>
                 </form>
+                <div class="totalScanItems">
+                    <div class="totalScanItemsText">פריטים שנסרקו עד כה</div>
+                    <div class="totalScanItemsIcon"><span>0</span></div>
+                    <div class="totalScanItemsedit"><a>הצג</a></div>
+                </div>
             </div>
-            <div ng-click="onAddBarcode()" class="loginBtn"><a>אישור</a></div>
+            <div ng-click="onAddBarcode()" class="loginBtn"><a>סיום</a></div>
         </div>
+       
+         <!--Popup Menu  -->
+        <div id="warpPopup">
+            <div class="miyunPopup">
+                <div class="shiyuchPopupInner">
+                    <div ng-click="onXClick()" class="closePop"><img src="images/closePopup.png" alt="" /></div>
+                    <br>
+                    <strong>פריטים שנסרקו עד כה</strong>
+                    <div id="warpList">
+                        <ul style="overflow: auto" id="deleteList" class="deleteList"></ul>
+                    </div>
+                    <div id="warpBtn">
+                        <div ng-click="onXClick()" class="loginBtn"><a>סיום</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--Footer-->
         <div id="footer"></div>

@@ -99,6 +99,8 @@ scotchApp.controller('distributionController', function ($scope) {
     };
 
     $scope.onAddBarCode = function () {
+
+        currentBarcode = $('.packageinput2').val();
         if (currentBarcode == '') {
             navigator.notification.alert('יש לסרוק ברקוד');
         }
@@ -131,6 +133,7 @@ scotchApp.controller('distributionController', function ($scope) {
                                 $("#deleteList").append('<li>' + currentBarcode + '</li>');
                                 $('#barcodeCount').text(index);
                                 $(".packageinput2").val('');
+                                currentBarcode = '';
                             }
                             else {
                                 navigator.notification.alert(message);
@@ -173,7 +176,7 @@ scotchApp.controller('distributionController', function ($scope) {
    <soapenv:Body>\
       <tem:ServerMessage>\
          <!--Optional:-->\
-         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><ACT>4</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>4</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
          </tem:ServerMessage>\
    </soapenv:Body>\
 </soapenv:Envelope>';
@@ -182,6 +185,8 @@ scotchApp.controller('distributionController', function ($scope) {
 
 
     $scope.onOkPressed = function () {
+        $('#barcodeCount').text(0);
+          index = 0;
     };
 
     $scope.onRegister = function () {

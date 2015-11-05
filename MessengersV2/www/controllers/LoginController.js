@@ -69,7 +69,7 @@
                                  }
                                  else if (apprvCode == "1") {
                                      navigator.notification.alert(reason);
-                                     location.href = "#/resetPass";
+                                     location.href = "#/collect_joined";
                                  }
                                  else if (apprvCode == "3") {
                                      navigator.notification.alert(reason);
@@ -84,7 +84,7 @@
                                      localStorage.setItem("MOKED", MOKED);
                                      var RLSCODE = thirdChild.childNodes[7].textContent;
                                      localStorage.setItem("RLSCODE", RLSCODE);
-                                     location.href = "#/collect";
+                                     location.href = "#/collect_joined";
                                  }
                              }
                              else {

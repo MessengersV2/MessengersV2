@@ -436,24 +436,14 @@
     "res\\screens\\android\\screen-mdpi-portrait.png",
     "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml",
     "www\\scripts\\respond.js",
-    "www\\controllers\\RegisterController.js~RF2bc0f5e8.TMP",
-    "www\\pages\\register.html~RF2c211980.TMP",
-    "www\\pages\\register.html~RF2c220f34.TMP",
-    "www\\pages\\register.html~RF2c2328ad.TMP",
-    "www\\pages\\register.html~RF2c27fd88.TMP",
-    "www\\controllers\\collectcontroller.js",
-    "www\\controllers\\DistributionController.js~RF2c2fc587.TMP",
-    "www\\controllers\\CollectController.js~RF2c321491.TMP"
+    "www\\controllers\\logincontroller.js",
+    "www\\controllers\\DistributionController.js~RF2c87d255.TMP",
+    "www\\pages\\collect_joined.html~RF2caf493a.TMP"
   ],
   "deletedFilesIos": [
-    "www\\controllers\\DeliverController.js~RF2bf795fe.TMP",
-    "www\\controllers\\DeliverController.js~RF2bf6e391.TMP",
-    "www\\controllers\\DeliverController.js~RF2bf2edbe.TMP",
-    "www\\controllers\\DeliverController.js~RF2c0ba0c8.TMP",
-    "www\\controllers\\DeliverController.js~RF2bf6c69f.TMP",
-    "www\\controllers\\DeliverController.js~RF2bef6c21.TMP",
-    "www\\controllers\\DeliverController.js~RF2bf09285.TMP",
-    "www\\controllers\\DistributionController.js~RF2bb854d8.TMP"
+    "www\\controllers\\CollectController.js~RF2c46b208.TMP",
+    "www\\controllers\\CollectController.js~RF2c46639b.TMP",
+    "www\\controllers\\CollectController.js~RF2c397b30.TMP"
   ],
   "addedPluginsIos": [
     "cordova-plugin-camera@1.2.0",

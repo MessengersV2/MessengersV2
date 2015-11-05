@@ -8,28 +8,15 @@
 
 scotchApp.controller('registerController', function ($scope) {
 
-    //###########################################################  Constructor Finish ###########################################################
-
-
     //#region JQuery On Document Ready
 
     //#endregion JQuery On Document Ready
-
-
-
-    //***********************************************************  General Variables Start **********************************************************
 
     var currentBarcode = '';
     var index = 0;
     var barcodes = [];
 
-    //###########################################################  General Variables Finish ###########################################################
-
-
-
-
-    //***********************************************************  Scan Start **********************************************************
-
+    //#region On Scan
     $scope.onScan = function () {
 
         cloudSky.zBar.scan({
@@ -52,15 +39,9 @@ scotchApp.controller('registerController', function ($scope) {
     function onFailure(data) {
         navigator.notification.alert('In cancelCallback');
     }
+    //#endregion
 
-    //###########################################################  Scan Finish ###########################################################
-
-
-
-
-
-    //***********************************************************  On Document Ready Start **********************************************************
-
+    //#region On Document Ready Angular
     angular.element(document).ready(function () {
 
         $("#header").load("pages/header.html");
@@ -78,68 +59,68 @@ scotchApp.controller('registerController', function ($scope) {
         });
 
     });
+    //#endregion
 
-    //###########################################################  On Document Ready Finish ###########################################################
-
-
-
-
-
-    //***********************************************************  On Clicks Start **********************************************************
-
+    //#region On Show List
     $scope.open = function () {
         $("#warpPopup").show();
     };
+    //#endregion
 
+    //#region On Close X
     $scope.onXClick = function () {
         $("#warpPopup").hide();
     };
-
+    //#endregion
     $scope.onAddBarCode = function () {
-        var soapMessage = CreateSaveItem4XML(currentBarcode);
-        var x = 10;
-        $
-           .ajax(
-                         {
-                             url: serverUrl,
-                             dataType: "xml",
-                             //dataType: 'json',
-                             type: "POST",
-                             async: false,
-                             contentType: "text/xml;charset=utf-8",
-                             headers: {
-                                 "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
-                             },
-                             crossDomain: true,
-                             data: soapMessage,
-                             timeout: 30000 //30 seconds timeout
-                         }).done(function (data) {
-                             if (data != null) {
-                                 var parser = new DOMParser();
-                                 var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
-                                 var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
-                                 var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
-                                 if (result == "0") {
-                                     barcodes[index] = currentBarcode;
-                                     index++;
-                                     $("#deleteList").append('<li>' + currentBarcode + '</li>');
-                                     $('#barcodeCount').text(index);
-                                     $(".packageinput2").val('');
-                                 }
-                                 else {
-                                     navigator.notification.alert(message);
-                                 }
-                             }
-                             else {
+        currentBarcode = $(".packageinput2").val();
+        if (currentBarcode == '') {
+            navigator.notification.alert('יש לסרוק פרקוד');
+        }
+        else {
+            var soapMessage = CreateSaveItem4XML(currentBarcode);
+            var x = 10;
+            $.ajax(
+                {
+                    url: serverUrl,
+                    dataType: "xml",
+                    //dataType: 'json',
+                    type: "POST",
+                    async: false,
+                    contentType: "text/xml;charset=utf-8",
+                    headers: {
+                        "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                    },
+                    crossDomain: true,
+                    data: soapMessage,
+                    timeout: 30000 //30 seconds timeout
+                }).done(function (data) {
+                    if (data != null) {
+                        var parser = new DOMParser();
+                        var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
+                        var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
+                        var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+                        if (result == "0") {
+                            barcodes[index] = currentBarcode;
+                            index++;
+                            $("#deleteList").append('<li>' + currentBarcode + '</li>');
+                            $('#barcodeCount').text(index);
+                            $(".packageinput2").val('');
+                        }
+                        else {
+                            navigator.notification.alert(message);
+                        }
+                    }
+                    else {
 
 
-                                 navigator.notification.alert('יש תקלה בשרת');
-                             }
+                        navigator.notification.alert('יש תקלה בשרת');
+                    }
 
-                         }).fail(function (jqXHR, textStatus, thrownError) {
-                             navigator.notification.alert('Fail!');
-                         });
-
+                }).fail(function (jqXHR, textStatus, thrownError) {
+                    navigator.notification.alert('Fail!');
+                });
+        }
     };
 
     function getCurrentDate() {
@@ -180,6 +161,9 @@ scotchApp.controller('registerController', function ($scope) {
     $scope.onDisterbute = function () {
         location.href = "#/distribution";
     };
-
+    $scope.onOkPressed = function () {
+        $('#barcodeCount').text(0);
+        index = 0;
+    };
 });
 

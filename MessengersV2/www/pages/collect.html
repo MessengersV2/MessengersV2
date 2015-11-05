@@ -34,8 +34,8 @@ $(function(){
 
 <div class="mainContent">
 
-<div class="BarcodeFields" ng-click="scan()">
-<a><div class="BarcodeArea"></div></a>
+<div class="BarcodeFields" >
+<a ng-click="scan()"><div class="BarcodeArea"></div></a>
 <form id="collect">
     <input type="text" ng-model="inputVal" class="packageinput" name="packageNum" placeholder="הקלד מספר פריט"><br>
 <div class="greyText">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
@@ -55,7 +55,7 @@ $(function(){
                     <ul style="overflow: auto" id="deleteList" class="deleteList"></ul>
                 </div>
                 <div id="warpBtn">
-                    <div ng-click="onXClick()" class="loginBtn"><a>אישור</a></div>
+                    <div ng-click="onXClick()" class="loginBtn"><a>סיום</a></div>
                 </div>
             </div>
         </div>
