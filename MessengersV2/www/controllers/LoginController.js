@@ -7,12 +7,21 @@
     var serverUrl = "https://cg.israelpost.co.il:9464/WcfShlihimPhoneDocs";
 
     function createLoginXML(userId, password) {
-
-        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>03/11/2015 09:18:11</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>'+ userId + '</USERID><PWD>'+password+'</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
+        var date = getCurrentDate();
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>'+date+'</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>'+ userId + '</USERID><PWD>'+password+'</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
         console.log('XML SENDING TO LOGIN: ' + xml);
         return xml;
     }
-
+    function getCurrentDate() {
+        //04/11/2015 14:53:34
+        var date = new Date();
+        var day = date.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        return str;
+    };
     function login() {
 
 
@@ -84,7 +93,7 @@
                                      localStorage.setItem("MOKED", MOKED);
                                      var RLSCODE = thirdChild.childNodes[7].textContent;
                                      localStorage.setItem("RLSCODE", RLSCODE);
-                                     location.href = "#/collect_joined";
+                                     location.href = "#/collect";
                                  }
                              }
                              else {

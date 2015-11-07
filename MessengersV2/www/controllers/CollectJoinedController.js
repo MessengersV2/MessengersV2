@@ -1,19 +1,20 @@
 ﻿scotchApp.controller('collect_joinedController', function ($scope, $routeParams) {
 
-    $scope.scan = function () {
-        scan();
-    };
-
     var currentBarcode = '';
+
+    //#region On Collect Pressed
     $scope.onCollect = function () {
         window.location.href = "#/collect";
     };
+    //#endregion
 
+    //#region On Ready Angular
     angular.element(document).ready(function () {
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
         $("#warpPopup").hide();
         $("warpPopup").load('deliverPopup.html');
+        $("#warpPopup").hide();
         $.sidr('close', 'simple-menu');
         $('input').on('keyup', function (e) {
             var theEvent = e || window.event;
@@ -23,7 +24,77 @@
             }
             return true;
         });
+        getMisparMaui();
     });
+    //#endregion
+
+
+    function getMisparMaui() {
+        var xml = CreateTablesXML();
+        var ee = 10;
+        $.ajax({
+            url: serverUrl,
+            dataType: "xml",
+            //dataType: 'json',
+            type: "POST",
+            async: false,
+            contentType: "text/xml;charset=utf-8",
+            headers: {
+                "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+            },
+            crossDomain: true,
+            data: xml,
+            timeout: 30000 //30 seconds timeout
+        }).done(function (data) {
+            if (data != null) {
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
+
+                var result = xmlDoc.firstChild.innerHTML;
+                var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+                if (result == "0") {
+                    currentBarCode = '';
+                    $(".packageinput2").val('');
+                    navigator.notification.alert('פריט נאסף בהצלחה');
+                }
+                else {
+                    navigator.notification.alert(message);
+                }
+            }
+            else {
+
+
+                navigator.notification.alert('יש תקלה בשרת');
+            }
+
+        }).fail(function (jqXHR, textStatus, thrownError) {
+            navigator.notification.alert('Fail!');
+        });
+    }
+
+    function CreateTablesXML() {
+        var date = getCurrentDate();
+        var USRKEY = localStorage.getItem("USRKEY");
+        var USR = localStorage.getItem("USR");
+        var MOKED = localStorage.getItem("MOKED");
+        var RLSCODE = localStorage.getItem("RLSCODE");
+
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">\
+   <soapenv:Header/>\
+   <soapenv:Body>\
+      <tem:ServerMessage>\
+         <!--Optional:-->\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>13</CODE><SENDTIME>'+date+'</SENDTIME><GPS/><USRKEY>'+USRKEY+'</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><TBL><TBLID>3</TBLID><TBLDATA>1</TBLDATA><TBLSTR>1</TBLSTR></TBL></DATA></MSG></DATA>]]></tem:xml>\
+</tem:ServerMessage>\
+   </soapenv:Body>\
+</soapenv:Envelope>';
+        return xml;
+    }
+
+    //#region On Scan
+    $scope.scan = function () {
+        scan();
+    };
 
     function scan() {
         cloudSky.zBar.scan({
@@ -44,6 +115,9 @@
     function onFailure(data) {
         navigator.notification.alert('In cancelCallback');
     }
+    //#endregion
+
+    //#region Make Request To Server
 
     function CreateSaveItem4XML(barcode) {
         var date = getCurrentDate();
@@ -129,6 +203,8 @@
             }
         };
     }
+
+    //#endregion
 });
 
 

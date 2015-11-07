@@ -437,14 +437,13 @@
     "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml",
     "www\\scripts\\respond.js",
     "www\\controllers\\logincontroller.js",
-    "www\\controllers\\DistributionController.js~RF2c87d255.TMP",
-    "www\\pages\\collect_joined.html~RF2caf493a.TMP"
+    "www\\controllers\\collectcontroller.js",
+    "www\\controllers\\CollectController.js~RF384d593e.TMP",
+    "www\\controllers\\LoginController.js~RF384ea136.TMP",
+    "www\\controllers\\LoginController.js~RF384f05e1.TMP",
+    "www\\controllers\\CollectJoinedController.js~RF385eee0e.TMP"
   ],
-  "deletedFilesIos": [
-    "www\\controllers\\CollectController.js~RF2c46b208.TMP",
-    "www\\controllers\\CollectController.js~RF2c46639b.TMP",
-    "www\\controllers\\CollectController.js~RF2c397b30.TMP"
-  ],
+  "deletedFilesIos": [],
   "addedPluginsIos": [
     "cordova-plugin-camera@1.2.0",
     "cordova-plugin-dialogs@1.1.1",
