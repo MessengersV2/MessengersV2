@@ -437,11 +437,12 @@
     "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml",
     "www\\scripts\\respond.js",
     "www\\controllers\\logincontroller.js",
+    "www\\controllers\\LoginController.js~RF31c10e.TMP",
     "www\\controllers\\collectcontroller.js",
-    "www\\controllers\\CollectController.js~RF384d593e.TMP",
-    "www\\controllers\\LoginController.js~RF384ea136.TMP",
-    "www\\controllers\\LoginController.js~RF384f05e1.TMP",
-    "www\\controllers\\CollectJoinedController.js~RF385eee0e.TMP"
+    "www\\controllers\\CollectJoinedController.js~RF39b876.TMP",
+    "www\\controllers\\registercontroller.js",
+    "www\\controllers\\RegisterController.js~RF6c8602.TMP",
+    "www\\controllers\\LoginController.js~RF8004c3.TMP"
   ],
   "deletedFilesIos": [],
   "addedPluginsIos": [
@@ -451,7 +452,9 @@
     "cordova-plugin-keyboard@1.1.2"
   ],
   "deletedPluginsIos": [],
-  "changedFiles": [],
+  "changedFiles": [
+    "www\\controllers\\logincontroller.js"
+  ],
   "deletedFiles": [],
   "addedPlugins": [],
   "deletedPlugins": []

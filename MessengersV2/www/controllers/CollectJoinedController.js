@@ -30,6 +30,25 @@
 
 
     function getMisparMaui() {
+/*
+        if (currentBarCode.length != 13) {
+            navigator.notification.alert('אורך ברקוד אינו תקין, חייב להיות 13 תווים');
+            return;
+        }
+
+        else {
+            var isletter = isletter(currentBarCode[0]);
+            var isnum = isNumeric(currentBarCode[0]);
+            if (!isnum && !isletter) {
+                isletter = isletter(currentBarCode[1]);
+                isnum = isNumeric(currentBarCode[1]);
+                if (!isnum && !isletter) {
+                    navigator.notification.alert('שני תווים ראשונים צריכים להיות אלפא-נומרים.');
+                    return;
+                }
+            }
+        }
+*/
         var xml = CreateTablesXML();
         var ee = 10;
         $.ajax({
@@ -142,10 +161,24 @@
         //04/11/2015 14:53:34
         var date = new Date();
         var day = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
         if (day < 10) {
             day = "0" + day;
         }
-        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
         return str;
     };
 

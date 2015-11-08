@@ -16,15 +16,27 @@
         //04/11/2015 14:53:34
         var date = new Date();
         var day = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
         if (day < 10) {
             day = "0" + day;
         }
-        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
         return str;
     };
     function login() {
-
-
         var userId = "038243549";
         //$("#username").val();
         var password = "123456";
@@ -55,6 +67,9 @@
                                  var thirdChild = secondChild.childNodes[1];
                                  var apprvCode = thirdChild.childNodes[0].textContent;
                                  var reason = thirdChild.childNodes[1].textContent;
+                                 
+                                 //var params = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.children[1].children[1].firstChild.nodeValue, "text/xml");
+
 
                                  if (apprvCode == "5") {
                                      navigator.notification.alert(reason);
@@ -105,6 +120,7 @@
                          }).fail(function (jqXHR, textStatus, thrownError) {
                              navigator.notification.alert('Fail!');
                          });
+                         
 
     }
 

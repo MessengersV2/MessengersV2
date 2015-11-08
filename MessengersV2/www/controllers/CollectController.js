@@ -69,7 +69,7 @@
    <soapenv:Body>\
       <tem:ServerMessage>\
          <!--Optional:-->\
-         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>3</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV></DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>3</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN></FN><LN></LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
          </tem:ServerMessage>\
    </soapenv:Body>\
 </soapenv:Envelope>';
@@ -80,21 +80,75 @@
         //04/11/2015 14:53:34
         var date = new Date();
         var day = date.getDate();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
         if (day < 10) {
             day = "0" + day;
         }
-        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        if (minutes < 10) {
+            minutes = "0" + minutes;
+        }
+        if (hours < 10) {
+            hours = "0" + hours;
+        }
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
         return str;
     };
 
+    function isLetter(str) {
+        if(str.length === 1 && str.match(/[a-z]/i))
+        {
+        return true;
+        }
+        else
+        {
+        return false
+        }
+    }
+
+    function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+rCode = $scope.inputVal;
+
     $scope.onAddBarcode = function () {
-        currentBarCode = $scope.inputVal;
+        currentBa
+   navigator.notification.alert('אורך ברקוד אינו תקין, חייב להיות 13 תווים');
+            return;
+        }
+
+        else {
+            var isletter = isLetter(currentBarCode[0]);
+            var isnum = isNumeric(currentBarCode[0]);
+            if (!isnum && !is(currentBarCode[1]);
+            isnum = isNumeric(currentBarCode[1]);
+                if (!isnum letter) {
+                  navigator.notification.alert('שני תווים ראשונים צריכים להיות אלפא-נומרים.');
+                    return;
+            }
+            isletter = isletter|| !isletter) {
+                    navigator.notification.alert('שני תווים ראשונים צריכים להיות אלפא-נומרים.');
+                    return;
+                }
+        }
+        if (currentBarCode.length != 13) {
+         
+
         if (currentBarCode == '') {
             navigator.notification.alert('יש לסרוק ברקוד');
+            return;
         }
+
         else {
             if (currentBarCode.substring(0, 2) == "51" && currentBarCode.substring(currentBarCode.length - 2, currentBarCode.length) == 17) {
                 navigator.notification.alert('איסוף פריט מסוג 51-17 יש לבצע בתפריט איסוף מחנות בלבד');
+                return;
             }
             else {
 
@@ -142,7 +196,7 @@
                       });
             }
         }
-        
+
     };
 
 });
