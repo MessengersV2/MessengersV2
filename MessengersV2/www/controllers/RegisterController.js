@@ -73,7 +73,8 @@ scotchApp.controller('registerController', function ($scope) {
     };
     //#endregion
     $scope.onAddBarCode = function () {
-        currentBarcode = $(".packageinput2").val();
+        currentBarcode = $(
+            ".packageinput2").val();
         var isOk = validateManaualCode(currentBarcode);
         if (isOk) {
             var soapMessage = CreateSaveItem4XML(currentBarcode);
@@ -148,6 +149,10 @@ scotchApp.controller('registerController', function ($scope) {
         return validated;
     }
 
+    function displayErrorMessage(error) {
+        navigator.notification.alert(error);
+    }
+   
     function getCurrentDate() {
         //04/11/2015 14:53:34
         var date = new Date();

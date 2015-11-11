@@ -67,7 +67,8 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
             $scope.inputVal = currentBarcode;
             isBarcodeOk = true;
         }
-
+        var xml = CreateTablesXML();
+        getKodMesiraTable(xml);
 
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
@@ -487,5 +488,82 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
         window.location.href = "#/deliverJoined";
     };
     //#endregion On Deliver Joined
+
+
+    function getKodMesiraTable(xml) {
+        $
+         .ajax(
+                       {
+                           url: serverUrl,
+                           dataType: "xml",
+                           //dataType: 'json',
+                           type: "POST",
+                           async: false,
+                           contentType: "text/xml;charset=utf-8",
+                           headers: {
+                               "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                           },
+                           crossDomain: true,
+                           data: xml,
+                           timeout: 30000 //30 seconds timeout
+                       }).done(function (data) {
+                           if (data != null) {
+                               var parser = new DOMParser();
+                               var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.nodeValue, "text/xml");
+                               var data = xmlDoc.firstChild.firstChild.children[1].firstChild.innerHTML;
+                               var children = data.children;
+                               for (var i = 0; i < children; i++) {
+                                   var child = children[i];
+                               }
+
+                               var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
+                               var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+
+                               if (result == "0") {
+                                   isBarcodeOk = false;
+                                   pictures = [];
+                                   currentBarcode = '';
+                                   $('.area').val('-1');
+                                   base64Signature = '';
+                                   $(".packageinput2").val('');
+                                   $("#warpPopup").load(location.href + " #warpPopup");
+                               }
+                               else {
+                                   navigator.notification.alert(message);
+                               }
+                           }
+                           else {
+
+
+                               navigator.notification.alert('יש תקלה בשרת');
+                           }
+
+                       }).fail(function (jqXHR, textStatus, thrownError) {
+                           navigator.notification.alert('Fail!');
+                       });
+    }
+
+
+    function CreateTablesXML() {
+        var date = getCurrentDate();
+        var USRKEY = localStorage.getItem("USRKEY");
+        var USR = localStorage.getItem("USR");
+        var MOKED = localStorage.getItem("MOKED");
+        var RLSCODE = localStorage.getItem("RLSCODE");
+
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">\
+   <soapenv:Header/>\
+   <soapenv:Body>\
+      <tem:ServerMessage>\
+         <!--Optional:-->\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>13</CODE><SENDTIME>'+ date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><TBL><TBLID>1</TBLID><TBLDATA>1</TBLDATA><TBLSTR>1</TBLSTR></TBL></DATA></MSG></DATA>]]></tem:xml>\
+</tem:ServerMessage>\
+   </soapenv:Body>\
+</soapenv:Envelope>';
+        return xml;
+    }
+
+
+
 });
 

@@ -436,13 +436,14 @@
     "res\\screens\\android\\screen-mdpi-portrait.png",
     "plugins\\cordova-plugin-dialogs\\src\\ubuntu\\notification.qml",
     "www\\scripts\\respond.js",
-    "www\\controllers\\delivercontroller.js",
-    "www\\controllers\\DeliverController.js~RF484979eb.TMP",
-    "www\\script.js~RF484f9345.TMP",
+    "www\\controllers\\collectcontroller.js",
     "www\\controllers\\logincontroller.js",
+    "www\\controllers\\registercontroller.js",
     "www\\scripts\\ngAutocomplete.js",
-    "www\\controllers\\CollectJoinedController.js~RF4a2847ce.TMP",
-    "www\\controllers\\CollectJoinedController.js~RF4a2b3641.TMP"
+    "www\\controllers\\CollectJoinedController.js~RF9812a1d.TMP",
+    "www\\controllers\\CollectJoinedController.js~RF98824ff.TMP",
+    "www\\controllers\\CollectJoinedController.js~RF9890b96.TMP",
+    "www\\controllers\\CollectJoinedController.js~RF98e64eb.TMP"
   ],
   "deletedFilesIos": [],
   "addedPluginsIos": [
@@ -453,9 +454,7 @@
   ],
   "deletedPluginsIos": [],
   "changedFiles": [
-    "www\\controllers\\CollectJoinedController.js",
-    "www\\controllers\\CollectJoinedController.js~RF4a2b3641.TMP",
-    "www\\pages\\collect_joined.html"
+    "www\\controllers\\DeliverController.js"
   ],
   "deletedFiles": [],
   "addedPlugins": [],
