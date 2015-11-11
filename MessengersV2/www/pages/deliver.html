@@ -83,8 +83,9 @@
             <a><div class="BarcodeArea" ng-click="onScan()" id="deliver_startScan"></div></a>
             <form id="deliver">
                 <div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
-                <input type="text" class="packageinput2" name="packageNum" id="packageinput" placeholder="הקלד מספר פריט">
-                <img ng-click="onTakePicture()" class="cameraBtn" id="takePic" src="images/CameraBtn.jpg" alt="" /><br>
+                <input ng-model="inputVal" type="text" class="packageinput2" name="packageNum" id="packageinput" placeholder="הקלד מספר פריט">
+                <img ng-click="onTakePicture()" class="cameraBtn" id="takePic" src="images/CameraBtn.jpg" alt="" />
+                <button ng-click="onCheckBarCode()" type="button">Check</button><br>
                 <select class="area" name="area">
                     <option class="areainput" value="-1">קוד מסירה/אי מסירה</option>
                     <option class="areainput" value="01">נמסר</option>
@@ -97,7 +98,7 @@
                 </select>
             </form>
             <div class="totalScanItems">
-                <div ng-click="open()" class="signature"><a>חתימה</a></div>
+                <div ng-click="open()" id="sigDiv" class="signature"><a>חתימה</a></div>
             </div>
 
         </div>

@@ -68,7 +68,15 @@
                                  var apprvCode = thirdChild.childNodes[0].textContent;
                                  var reason = thirdChild.childNodes[1].textContent;
                                  
-                                 //var params = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.children[1].children[1].firstChild.nodeValue, "text/xml");
+                                 var params = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.children[1].children[1].firstChild.nodeValue, "text/xml");
+
+                                 var MAX_EE_WT = params.firstChild.firstChild.children[1].children[5].localName;
+                                 var TASK_CLOSED2EXECUTION_TIME = params.firstChild.firstChild.children[1].children[6].innerHTML;
+                                 var TASK_LAGGED_TIME = params.firstChild.firstChild.children[1].children[7].innerHTML;
+                                 var TASK_NOTAPPROVED_TIME = params.firstChild.firstChild.children[1].children[8].innerHTML;
+                                 var PHOTO_REQ = params.firstChild.firstChild.children[1].children[10].innerHTML;
+                                 var NO_PH_SUG_MOZAR = params.firstChild.firstChild.children[1].children[11].innerHTML;
+                                 var NO_PH_BC_ENDING = params.firstChild.firstChild.children[1].children[12].innerHTML;
 
 
                                  if (apprvCode == "5") {
@@ -108,7 +116,17 @@
                                      localStorage.setItem("MOKED", MOKED);
                                      var RLSCODE = thirdChild.childNodes[7].textContent;
                                      localStorage.setItem("RLSCODE", RLSCODE);
-                                     location.href = "#/collect";
+
+                                     localStorage.setItem("MAX_EE_WT", MAX_EE_WT);
+                                     localStorage.setItem("TASK_CLOSED2EXECUTION_TIME", TASK_CLOSED2EXECUTION_TIME);
+                                     localStorage.setItem("TASK_LAGGED_TIME", TASK_LAGGED_TIME);
+                                     localStorage.setItem("TASK_NOTAPPROVED_TIME", TASK_NOTAPPROVED_TIME);
+                                     localStorage.setItem("PHOTO_REQ", PHOTO_REQ);
+                                     localStorage.setItem("NO_PH_SUG_MOZAR", NO_PH_SUG_MOZAR);
+                                     localStorage.setItem("NO_PH_BC_ENDING", NO_PH_BC_ENDING);
+                      
+
+                                     location.href = "#/collect_joined";
                                  }
                              }
                              else {

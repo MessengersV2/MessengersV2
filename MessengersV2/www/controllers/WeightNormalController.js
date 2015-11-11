@@ -1,23 +1,30 @@
 ﻿scotchApp.controller('weightNormalController', function ($scope, $routeParams) {
 
-
+    var originalWeghit = "";
+    var barcode = "";
+    var kodmesira = "";
+    var countPictures = "";
     angular.element(document).ready(function () {
-
+        originalWeghit = $routeParams.originalWeight;
+        barcode = $routeParams.barcode;
+        kodmesira = $routeParams.kodmesira;
+        countPictures = $routeParams.countPictures;
+        $("#packageinput").val(originalWeghit);
+        $(".packageinput4").val(barcode);
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
-
     });
-
 
 
     $scope.$watch('value', function (value) {
         if (value == 2) {
+            if (barcode != '' && originalWeghit != '') {
+
+            }
             window.location.href = "#/weightPallet";
         }
 
     });
-
-
 
 
     //#region On Scan Barcode
@@ -41,6 +48,17 @@
     }
     //#endregion On Scan Barcode
 
+    $scope.onOkPressed = function () {
+        if (barcode != '' && originalWeghit != '') {
+            var select = $(".area").val();
+            if (select == "-1") {
+                navigator.notification.alert("יש לבחור משקל מתוקן");
+            }
+            else {
+                location.href = "#/deliver/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + select + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures;
+            }
+        }
+    };
 
 });
 

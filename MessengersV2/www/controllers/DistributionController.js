@@ -98,31 +98,38 @@ scotchApp.controller('distributionController', function ($scope) {
         $("#warpPopup").hide();
     };
 
+    function validateManaualCode(manualcode) {
+        //must have exactly 13 chars
+        //first 2 chars must be alphanumeric
+        //next 9 chars must be numeric
+        //last 2 chars must be letters
+        var errorManualCode1 = 'מספר התווים בברקוד חייב להיות בדיוק 13';
+        var errorManualCode2 = '2 התווים הראשונים חייבים להיות אלפא-נומריים';
+        var errorManualCode3 = '9 התווים האמצעיים חייבים להיות נומריים';
+        var errorManualCode4 = '2 התווים האחרונים חייבים להיות אותיות';
+        var errorMessageToDisplay = '';
+        var barcodeExpectedLength = 13;
+        var validated = true;
+        if (manualcode.length != barcodeExpectedLength)
+        { errorMessageToDisplay = errorManualCode1; validated = false; }
+        if (validated == true && (/[^a-zA-Z0-9]/.test(manualcode.substring(0, 2))))
+        { errorMessageToDisplay = errorManualCode2; validated = false; }
+        if (validated == true && isNaN(manualcode.substring(2, 11)))
+        { errorMessageToDisplay = errorManualCode3; validated = false; }
+        if (validated == true && !isNaN(manualcode.substring(11, 13)))
+        { errorMessageToDisplay = errorManualCode4; validated = false; }
+        if (validated == false) {
+            console.log('manual barcode error: ' + errorMessageToDisplay);
+            displayErrorMessage(errorMessageToDisplay);
+        }
+        return validated;
+    }
+
     $scope.onAddBarCode = function () {
 
         currentBarcode = $('.packageinput2').val();
-        if (currentBarCode.length != 13) {
-            navigator.notification.alert('אורך ברקוד אינו תקין, חייב להיות 13 תווים');
-            return;
-        }
-
-        else {
-            var isletter = isletter(currentBarCode[0]);
-            var isnum = isNumeric(currentBarCode[0]);
-            if (!isnum && !isletter) {
-                isletter = isletter(currentBarCode[1]);
-                isnum = isNumeric(currentBarCode[1]);
-                if (!isnum && !isletter) {
-                    navigator.notification.alert('שני תווים ראשונים צריכים להיות אלפא-נומרים.');
-                    return;
-                }
-            }
-        }
-
-        if (currentBarcode == '') {
-            navigator.notification.alert('יש לסרוק ברקוד');
-        }
-        else {
+        var isOk = validateManaualCode(currentBarcode);
+        if(isOk) {
             var soapMessage = CreateSaveItem4XML(currentBarcode);
             var x = 10;
             $.ajax(
@@ -193,8 +200,6 @@ scotchApp.controller('distributionController', function ($scope) {
         var str = day + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hours + ":" + minutes + ":" + seconds;
         return str;
     };
-
-
 
     function CreateSaveItem4XML(barcode) {
         var date = getCurrentDate();

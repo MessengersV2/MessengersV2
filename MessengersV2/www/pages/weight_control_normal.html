@@ -49,25 +49,21 @@ $(function(){
 
       <div class="selectInput">
       <div class="selectInputfield">
-        <select class="area" name="area">
-          <option class="areainput">משקל מקורי</option>
-          <option class="areainput">אופציה 1</option>
-          <option class="areainput">אופציה 2</option>
-          <option class="areainput">אופציה 3</option>
-        </select>
+       <input type="text" class="packageinput4" name="packageNum" placeholder="משקל מקורי">
        </div>
        <div class="selectInputfield">
         <select class="area" name="area">
-          <option class="areainput">משקל מתוקן</option>
-          <option class="areainput">אופציה 1</option>
-          <option class="areainput">אופציה 2</option>
-          <option class="areainput">אופציה 3</option>
+          <option class="areainput" value="-1">משקל מתוקן</option>
+          <option class="areainput" value="01000">0 עד 1 ק"ג </option>
+          <option class="areainput" value="15000">1 ק"ג עד 15 ק"ג</option>
+          <option class="areainput" value="25000" >15 ק"ג עד 25 ק"ג</option>
+          <option class="areainput" value="35000">25 ק"ג עד 35 ק"ג</option>
         </select>
       </div>
        </div>
          
     </form>
-    <div class="loginBtn"><a href="#">אישור</a></div>
+    <div class="loginBtn" ng-click="onOkPressed()"><a>אישור</a></div>
   </div>
 
 </div>

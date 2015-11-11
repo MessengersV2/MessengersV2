@@ -1,7 +1,9 @@
 ﻿scotchApp.controller('collect_joinedController', function ($scope, $routeParams) {
 
     var currentBarcode = '';
-
+    var currentMem = '';
+    var index = 0;
+    $scope.names = [];
     //#region On Collect Pressed
     $scope.onCollect = function () {
         window.location.href = "#/collect";
@@ -10,6 +12,18 @@
 
     //#region On Ready Angular
     angular.element(document).ready(function () {
+        $("#packageinput4").autocomplete({
+            source: misparim
+        });
+        $("#packageinput4").autocomplete({
+            select: function (a, b) {
+                var result = b.item.value;
+                var arr = result.split(",");
+                var idNow = arr[1];
+                idNow = idNow.trim();
+                currentMem = idNow;
+            }
+        });
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
         $("#warpPopup").hide();
@@ -24,31 +38,73 @@
             }
             return true;
         });
-        getMisparMaui();
+
+
+        var self = this;
+        self.simulateQuery = false;
+        self.isDisabled = false;
+        // list of `state` value/display objects
+        self.states = getMisparMaui();;
+        self.querySearch = querySearch;
+        self.selectedItemChange = selectedItemChange;
+        self.searchTextChange = searchTextChange;
+        self.newState = newState;
+        function newState(state) {
+            alert("Sorry! You'll need to create a Constituion for " + state + " first!");
+        }
+
+
+
+        
     });
     //#endregion
 
+    //#region On Close X
+    $scope.onXClick = function () {
+        $("#warpPopup").hide();
+    };
+    //#endregion
+
+
+    function createFilterFor(query) {
+        var lowercaseQuery = angular.lowercase(query);
+        return function filterFn(state) {
+            return (state.value.indexOf(lowercaseQuery) === 0);
+        };
+    }
+
+    function querySearch(query) {
+        var results = query ? self.states.filter(createFilterFor(query)) : self.states,
+            deferred;
+        if (self.simulateQuery) {
+            deferred = $q.defer();
+            $timeout(function () { deferred.resolve(results); }, Math.random() * 1000, false);
+            return deferred.promise;
+        } else {
+            return results;
+        }
+    }
+    function searchTextChange(text) {
+        $log.info('Text changed to ' + text);
+    }
+    function selectedItemChange(item) {
+        $log.info('Item changed to ' + JSON.stringify(item));
+    }
+
+
+
+
+
+
+
+
+
+    var misparim = [];
+
+ 
 
     function getMisparMaui() {
-/*
-        if (currentBarCode.length != 13) {
-            navigator.notification.alert('אורך ברקוד אינו תקין, חייב להיות 13 תווים');
-            return;
-        }
-
-        else {
-            var isletter = isletter(currentBarCode[0]);
-            var isnum = isNumeric(currentBarCode[0]);
-            if (!isnum && !isletter) {
-                isletter = isletter(currentBarCode[1]);
-                isnum = isNumeric(currentBarCode[1]);
-                if (!isnum && !isletter) {
-                    navigator.notification.alert('שני תווים ראשונים צריכים להיות אלפא-נומרים.');
-                    return;
-                }
-            }
-        }
-*/
+ 
         var xml = CreateTablesXML();
         var ee = 10;
         $.ajax({
@@ -70,15 +126,13 @@
                 var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
 
                 var result = xmlDoc.firstChild.innerHTML;
-                var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
-                if (result == "0") {
-                    currentBarCode = '';
-                    $(".packageinput2").val('');
-                    navigator.notification.alert('פריט נאסף בהצלחה');
+                var children = xmlDoc.firstChild.firstChild.children[1].firstChild.children;
+                for (i = 0; i < children.length; ++i) {
+                    var id = children[i].children[0].innerHTML;
+                    var name = children[i].children[1].innerHTML
+                    misparim.push(name + " , " + id);   
                 }
-                else {
-                    navigator.notification.alert(message);
-                }
+               return misparim;
             }
             else {
 
@@ -138,7 +192,38 @@
 
     //#region Make Request To Server
 
-    function CreateSaveItem4XML(barcode) {
+    function validateManaualCode(manualcode) {
+        //must have exactly 13 chars
+        //first 2 chars must be alphanumeric
+        //next 9 chars must be numeric
+        //last 2 chars must be letters
+        var errorManualCode1 = 'מספר התווים בברקוד חייב להיות בדיוק 13';
+        var errorManualCode2 = '2 התווים הראשונים חייבים להיות אלפא-נומריים';
+        var errorManualCode3 = '9 התווים האמצעיים חייבים להיות נומריים';
+        var errorManualCode4 = '2 התווים האחרונים חייבים להיות אותיות';
+        var errorMessageToDisplay = '';
+        var barcodeExpectedLength = 13;
+        var validated = true;
+        if (manualcode.length != barcodeExpectedLength)
+        { errorMessageToDisplay = errorManualCode1; validated = false; }
+        if (validated == true && (/[^a-zA-Z0-9]/.test(manualcode.substring(0, 2))))
+        { errorMessageToDisplay = errorManualCode2; validated = false; }
+        if (validated == true && isNaN(manualcode.substring(2, 11)))
+        { errorMessageToDisplay = errorManualCode3; validated = false; }
+        if (validated == true && !isNaN(manualcode.substring(11, 13)))
+        { errorMessageToDisplay = errorManualCode4; validated = false; }
+        if (validated == false) {
+            console.log('manual barcode error: ' + errorMessageToDisplay);
+            displayErrorMessage(errorMessageToDisplay);
+        }
+        return validated;
+    }
+
+    function displayErrorMessage(errorMessageToDisplay) {
+        navigator.notification.alert(errorMessageToDisplay);
+    }
+
+    function CreateSaveItem4XML(barcode,misparManui) {
         var date = getCurrentDate();
         var USRKEY = localStorage.getItem("USRKEY");
         var USR = localStorage.getItem("USR");
@@ -150,7 +235,7 @@
    <soapenv:Body>\
       <tem:ServerMessage>\
          <!--Optional:-->\
-         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>3</ACT><MEM>0</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>3</ACT><MEM>'+misparManui+'</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
          </tem:ServerMessage>\
    </soapenv:Body>\
 </soapenv:Envelope>';
@@ -182,62 +267,79 @@
         return str;
     };
 
-    $scope.onAddBarcode = function () {
+    $scope.open = function () {
+        $("#warpPopup").show();
+    };
 
-        currentBarCode = $(".packageinput2").val();
-        if (currentBarCode == '') {
-            navigator.notification.alert('יש לסרוק ברקוד');
+
+    $scope.onAddBarcode = function () {
+        if (currentMem == '') {
+            navigator.notification.alert('יש לבחור מספר מנוי');
         }
-        else {
+        currentBarCode = $(".packageinput2").val();
+        var isOk = validateManaualCode(currentBarCode);
+        if (isOk) {
             if (currentBarCode.substring(0, 2) == "51" && currentBarCode.substring(currentBarCode.length - 2, currentBarCode.length) == 17) {
                 navigator.notification.alert('איסוף פריט מסוג 51-17 יש לבצע בתפריט איסוף מחנות בלבד');
             }
-            else {
-                var xml = CreateSaveItem4XML(currentBarCode);
-                var x = 10;
-                $.ajax(
-                      {
-                          url: serverUrl,
-                          dataType: "xml",
-                          //dataType: 'json',
-                          type: "POST",
-                          async: false,
-                          contentType: "text/xml;charset=utf-8",
-                          headers: {
-                              "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
-                          },
-                          crossDomain: true,
-                          data: xml,
-                          timeout: 30000 //30 seconds timeout
-                      }).done(function (data) {
-                          if (data != null) {
-                              var parser = new DOMParser();
-                              var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
-                              var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
-                              var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
-                              if (result == "0") {
-                                  currentBarCode = '';
-                                  $(".packageinput2").val('');
-                                  navigator.notification.alert('פריט נאסף בהצלחה');
-                              }
-                              else {
-                                  navigator.notification.alert(message);
-                              }
+            else{
+            var xml = CreateSaveItem4XML(currentBarCode,currentMem);
+            var x = 10;
+            $.ajax(
+                  {
+                      url: serverUrl,
+                      dataType: "xml",
+                      //dataType: 'json',
+                      type: "POST",
+                      async: false,
+                      contentType: "text/xml;charset=utf-8",
+                      headers: {
+                          "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                      },
+                      crossDomain: true,
+                      data: xml,
+                      timeout: 30000 //30 seconds timeout
+                  }).done(function (data) {
+                      if (data != null) {
+                          var parser = new DOMParser();
+                          var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
+                          var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
+                          var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+                          if (result == "0") {
+                              index++;
+                              $("#deleteList").append('<li>' + currentBarCode + '</li>');
+                              $('#barcodeCount').text(index);
+                              $(".packageinput2").val('');
+                              currentBarCode = '';
                           }
                           else {
-
-
-                              navigator.notification.alert('יש תקלה בשרת');
+                              navigator.notification.alert(message);
                           }
+                      }
+                      else {
 
-                      }).fail(function (jqXHR, textStatus, thrownError) {
-                          navigator.notification.alert('Fail!');
-                      });
+
+                          navigator.notification.alert('יש תקלה בשרת');
+                      }
+
+                  }).fail(function (jqXHR, textStatus, thrownError) {
+                      navigator.notification.alert('Fail!');
+                  });
             }
-        };
-    }
+        }
+        else
+        {
+            
+        }
+    };
+ 
 
     //#endregion
+
+
+
 });
+
+
 
 

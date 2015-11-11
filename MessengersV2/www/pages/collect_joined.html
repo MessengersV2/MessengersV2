@@ -36,16 +36,35 @@
         <div class="mainContent">
             <div class="BarcodeFields">
                 <form id="collect_joined">
-                    <input type="text" class="packageinput4" name="packageNum" placeholder="מספר מנוי">
-                    <a ng-click="scan()"><div class="BarcodeArea"></div></a>
+                    <!--<input type="text" id="packageinput4" class="packageinput4" name="packageNum" placeholder="מספר מנוי">-->
+                    <md-autocomplete ng-disabled="ctrl.isDisabled"
+                                     md-no-cache="ctrl.noCache"
+                                     md-selected-item="ctrl.selectedItem"
+                                     md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+                                     md-search-text="ctrl.searchText"
+                                     md-selected-item-change="ctrl.selectedItemChange(item)"
+                                     md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                     md-item-text="item.display"
+                                     md-min-length="0"
+                                     placeholder="What is your favorite US state?">
+                        <md-item-template>
+                            <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No states matching "{{ctrl.searchText}}" were found.
+                            <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                        </md-not-found>
+                    </md-autocomplete>  
+                       
+                     <a ng-click="scan()"><div class="BarcodeArea"></div></a>
                     <div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
                     <input type="text" ng-model="inputVal" class="packageinput2" name="packageNum" placeholder="הקלד מספר פריט">
                     <a ng-click="onAddBarcode()"><img class="cameraBtn" src="images/AddBtn.jpg" alt="" /></a><br>
                 </form>
                 <div class="totalScanItems">
                     <div class="totalScanItemsText">פריטים שנסרקו עד כה</div>
-                    <div class="totalScanItemsIcon"><span>0</span></div>
-                    <div class="totalScanItemsedit"><a>הצג</a></div>
+                    <div class="totalScanItemsIcon"><span id="barcodeCount">0</span></div>
+                    <div class="totalScanItemsedit" ng-click="open()"><a>הצג</a></div>
                 </div>
             </div>
             <div ng-click="onAddBarcode()" class="loginBtn"><a>סיום</a></div>

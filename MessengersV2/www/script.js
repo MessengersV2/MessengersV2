@@ -1,4 +1,4 @@
-﻿var scotchApp = angular.module('scotchApp', ['ngRoute']);
+﻿var scotchApp = angular.module('scotchApp', ['ngRoute','ngAutocomplete']);
 
 // configure our routes
 scotchApp.config(function ($routeProvider) {
@@ -31,11 +31,20 @@ scotchApp.config(function ($routeProvider) {
          templateUrl: 'pages/deliver.html',
          controller: 'deliverController'
      })
+          .when('/deliver/originalWeight/:originalWeight/barcode/:barcode/fixedWeight/:fixWeight/kodmesira/:kodmesira/countPictures/:countPictures', {
+              templateUrl: 'pages/deliver.html',
+              controller: 'deliverController'
+          })
 
    .when('/deliverJoined', {
        templateUrl: 'pages/deliver_joined.html',
        controller: 'deliverJoinedController'
    })
+
+         .when('/weightNormal/originalWeight/:originalWeight/barcode/:barcode/kodmesira/:kodmesira/countPictures/:countPictures', {
+             templateUrl: 'pages/weight_control_normal.html',
+             controller: 'weightNormalController'
+         })
 
 
      .when('/weightNormal', {
