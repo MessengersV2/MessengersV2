@@ -105,6 +105,7 @@
     <splash src="res/screens/wp8/SplashScreenImage.jpg" width="480" height="800" />
   </platform>
   <preference name="KeepRunning" value="True" />
+  <preference name="fullscreen" value="false" />
   <preference name="ShowTitle" value="True" />
   <preference name="InAppBrowserStorageEnabled" value="True" />
   <preference name="SuppressesIncrementalRendering" value="True" />

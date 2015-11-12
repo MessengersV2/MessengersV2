@@ -43,14 +43,6 @@
     //#endregion
 
 
-
-
-
-
-
-
-
-
     var misparim = [];
     function getMisparMaui() {
 
@@ -141,32 +133,7 @@
 
     //#region Make Request To Server
 
-    function validateManaualCode(manualcode) {
-        //must have exactly 13 chars
-        //first 2 chars must be alphanumeric
-        //next 9 chars must be numeric
-        //last 2 chars must be letters
-        var errorManualCode1 = 'מספר התווים בברקוד חייב להיות בדיוק 13';
-        var errorManualCode2 = '2 התווים הראשונים חייבים להיות אלפא-נומריים';
-        var errorManualCode3 = '9 התווים האמצעיים חייבים להיות נומריים';
-        var errorManualCode4 = '2 התווים האחרונים חייבים להיות אותיות';
-        var errorMessageToDisplay = '';
-        var barcodeExpectedLength = 13;
-        var validated = true;
-        if (manualcode.length != barcodeExpectedLength)
-        { errorMessageToDisplay = errorManualCode1; validated = false; }
-        if (validated == true && (/[^a-zA-Z0-9]/.test(manualcode.substring(0, 2))))
-        { errorMessageToDisplay = errorManualCode2; validated = false; }
-        if (validated == true && isNaN(manualcode.substring(2, 11)))
-        { errorMessageToDisplay = errorManualCode3; validated = false; }
-        if (validated == true && (/[^a-zA-Z0-9]/.test(manualcode.substring(11, 13))))
-        { errorMessageToDisplay = errorManualCode4; validated = false; }
-        if (validated == false) {
-            console.log('manual barcode error: ' + errorMessageToDisplay);
-            displayErrorMessage(errorMessageToDisplay);
-        }
-        return validated;
-    }
+    
 
     function displayErrorMessage(errorMessageToDisplay) {
         navigator.notification.alert(errorMessageToDisplay);
@@ -184,7 +151,7 @@
    <soapenv:Body>\
       <tem:ServerMessage>\
          <!--Optional:-->\
-         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST>0</DST><DELIV>1</DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>3</ACT><MEM>' + misparManui + '</MEM><DEVKEY>9999</DEVKEY><FN>klj</FN><LN>jkl</LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><ORG></ORG><CRT></CRT><PLT></PLT></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
+         <tem:xml><![CDATA[<DATA><MSG><SYSTEMID>1</SYSTEMID><HEADER><MSGVER>1</MSGVER><CODE>3</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY>' + USRKEY + '</USRKEY><DEVKEY>9999</DEVKEY><VER>2</VER></HEADER><DATA><ITEM><ITEMID></ITEMID><BC>' + barcode + '</BC><CRDT>' + date + '</CRDT><DST></DST><DELIV></DELIV><USR>' + USR + '</USR><MOKED>' + MOKED + '</MOKED><TYP>0</TYP><ACT>3</ACT><MEM>' + misparManui + '</MEM><DEVKEY>9999</DEVKEY><FN></FN><LN></LN><SIG></SIG><PH1></PH1><PH2></PH2><PH3></PH3><MEM></MEM><RQ></RQ><RQP>0</RQP><RQW>0</RQW><ORG>0</ORG><CRT></CRT><PLT></PLT><LNK></LNK></ITEM><BATCH></BATCH></DATA></MSG></DATA>]]></tem:xml>\
          </tem:ServerMessage>\
    </soapenv:Body>\
 </soapenv:Envelope>';
@@ -220,71 +187,72 @@
         $("#warpPopup").show();
     };
 
-
     $scope.onAddBarcode = function () {
         currentBarCode = $(".packageinput2").val();
         if (currentBarCode.substring(0, 2) == "51" && currentBarCode.substring(currentBarCode.length - 2, currentBarCode.length) == 17) {
             navigator.notification.alert('איסוף פריט מסוג 51-17 יש לבצע בתפריט איסוף מחנות בלבד');
         }
-        currentMem = $(".packageinput4").val();
-        if (currentMem == '') {
-            navigator.notification.alert('יש לבחור מספר מנוי');
-        }
-        var isOk = validateManaualCode(currentBarCode);
-        if (isOk) {
-            if (currentBarCode.substring(0, 2) == "51" && currentBarCode.substring(currentBarCode.length - 2, currentBarCode.length) == 17) {
-                navigator.notification.alert('איסוף פריט מסוג 51-17 יש לבצע בתפריט איסוף מחנות בלבד');
+        else {
+            currentMem = $(".packageinput4").val();
+            var memCode = currentMem.split(",");
+            memCode = memCode[1];
+            if (currentMem == '') {
+                navigator.notification.alert('יש לבחור מספר מנוי');
             }
-            else {
-                var xml = CreateSaveItem4XML(currentBarCode, currentMem);
-                var x = 10;
-                $.ajax(
-                      {
-                          url: serverUrl,
-                          dataType: "xml",
-                          //dataType: 'json',
-                          type: "POST",
-                          async: false,
-                          contentType: "text/xml;charset=utf-8",
-                          headers: {
-                              "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
-                          },
-                          crossDomain: true,
-                          data: xml,
-                          timeout: 30000 //30 seconds timeout
-                      }).done(function (data) {
-                          if (data != null) {
-                              var parser = new DOMParser();
-                              var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
-                              var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
-                              var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
-                              if (result == "0") {
-                                  index++;
-                                  $("#deleteList").append('<li>' + currentBarCode + '</li>');
-                                  $('#barcodeCount').text(index);
-                                  $(".packageinput2").val('');
-                                  currentBarCode = '';
+            var isOk = validateManaualCode(currentBarCode);
+
+            if (isOk) {
+                if (currentBarCode.substring(0, 2) == "51" && currentBarCode.substring(currentBarCode.length - 2, currentBarCode.length) == 17) {
+                    navigator.notification.alert('איסוף פריט מסוג 51-17 יש לבצע בתפריט איסוף מחנות בלבד');
+                }
+                else {
+                    var xml = CreateSaveItem4XML(currentBarCode, memCode);
+                    var x = 10;
+                    $.ajax(
+                          {
+                              url: serverUrl,
+                              dataType: "xml",
+                              //dataType: 'json',
+                              type: "POST",
+                              async: false,
+                              contentType: "text/xml;charset=utf-8",
+                              headers: {
+                                  "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                              },
+                              crossDomain: true,
+                              data: xml,
+                              timeout: 30000 //30 seconds timeout
+                          }).done(function (data) {
+                              if (data != null) {
+                                  var parser = new DOMParser();
+                                  var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.data, "text/xml");
+                                  var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
+                                  var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
+                                  if (result == "0") {
+                                      index++;
+                                      $("#deleteList").append('<li>' + currentBarCode + '</li>');
+                                      $('#barcodeCount').text(index);
+                                      $(".packageinput2").val('');
+                                      currentBarCode = '';
+                                  }
+                                  else {
+                                      navigator.notification.alert(message);
+                                  }
                               }
                               else {
-                                  navigator.notification.alert(message);
+
+
+                                  navigator.notification.alert('יש תקלה בשרת');
                               }
-                          }
-                          else {
 
+                          }).fail(function (jqXHR, textStatus, thrownError) {
+                              navigator.notification.alert('Fail!');
+                          });
+                }
 
-                              navigator.notification.alert('יש תקלה בשרת');
-                          }
-
-                      }).fail(function (jqXHR, textStatus, thrownError) {
-                          navigator.notification.alert('Fail!');
-                      });
             }
         }
-        else {
-
-        }
     };
-
 
     //#endregion
 

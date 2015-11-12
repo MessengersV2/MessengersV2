@@ -8,7 +8,7 @@
 
     function createLoginXML(userId, password) {
         var date = getCurrentDate();
-        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>'+date+'</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>'+ userId + '</USERID><PWD>'+password+'</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>1</CODE><SENDTIME>' + date + '</SENDTIME><GPS/><USRKEY/><DEVKEY/><VER>4</VER></HEADER><DATA><USERID>' + userId + '</USERID><PWD>' + password + '</PWD></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
         console.log('XML SENDING TO LOGIN: ' + xml);
         return xml;
     }
@@ -37,6 +37,7 @@
         return str;
     };
     function login() {
+     
         var userId = "038243549";
         //$("#username").val();
         var password = "123456";
@@ -67,10 +68,10 @@
                                  var thirdChild = secondChild.childNodes[1];
                                  var apprvCode = thirdChild.childNodes[0].textContent;
                                  var reason = thirdChild.childNodes[1].textContent;
-                                 
+
                                  var params = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.children[1].children[1].firstChild.nodeValue, "text/xml");
 
-                                 var MAX_EE_WT = params.firstChild.firstChild.children[1].children[5].localName;
+                                 var MAX_EE_WT = params.firstChild.firstChild.children[1].children[5].innerHTML;
                                  var TASK_CLOSED2EXECUTION_TIME = params.firstChild.firstChild.children[1].children[6].innerHTML;
                                  var TASK_LAGGED_TIME = params.firstChild.firstChild.children[1].children[7].innerHTML;
                                  var TASK_NOTAPPROVED_TIME = params.firstChild.firstChild.children[1].children[8].innerHTML;
@@ -124,22 +125,18 @@
                                      localStorage.setItem("PHOTO_REQ", PHOTO_REQ);
                                      localStorage.setItem("NO_PH_SUG_MOZAR", NO_PH_SUG_MOZAR);
                                      localStorage.setItem("NO_PH_BC_ENDING", NO_PH_BC_ENDING);
-                      
 
-                                     location.href = "#/collect_joined";
+
+                                     location.href = "#/collect";
                                  }
                              }
                              else {
-                              
-
                                  navigator.notification.alert('יש תקלה בשרת');
                              }
 
                          }).fail(function (jqXHR, textStatus, thrownError) {
                              navigator.notification.alert('Fail!');
                          });
-                         
-
     }
 
 });

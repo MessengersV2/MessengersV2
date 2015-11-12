@@ -32,6 +32,8 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
     var isBarcodeOk = false;
     var fixedWeight = "0";
     var originalWeight = "0";
+    var isPalet = "0";
+    var RQWGlobal = "0";
     //#endregion General Variables
 
     //#region On Scan Barcode
@@ -57,18 +59,21 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
 
     //#region Angular Document Redy
     angular.element(document).ready(function () {
+        var xml = CreateTablesXML();
+        getKodMesiraTable(xml);
         if ($routeParams.originalWeight) {
             originalWeight = $routeParams.originalWeight;
             currentBarcode = $routeParams.barcode;
             fixedWeight = $routeParams.fixWeight;
             countPictures = $routeParams.countPictures;
+            isPalet = $routeParams.isPalet;
+            RQWGlobal = "1";
             var kodMesira = $routeParams.kodmesira;
             $(".area").val(kodMesira);
             $scope.inputVal = currentBarcode;
             isBarcodeOk = true;
         }
-        var xml = CreateTablesXML();
-        getKodMesiraTable(xml);
+
 
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
@@ -129,11 +134,15 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
     };
 
 
-    function CreateXml(sig, mesira, barcode, ph1, ph2, ph3) {
+    function CreateXml(sig, mesira, barcode, ph1, ph2, ph3, isPalet, fixedWeight,RQW) {
         var date = getCurrentDate();
         var USRKEY = localStorage.getItem("USRKEY");
         var USR = localStorage.getItem("USR");
         var MOKED = localStorage.getItem("MOKED");
+        var RQP = "0";
+        if (ph1 != '' || ph2 != '' || ph3 != '') {
+            RQP = "1";
+        }
         //var RLSCODE = localStorage.getItem("RLSCODE");
 
         var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">\
@@ -157,7 +166,7 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
 <ITEM>\
 <ITEMID></ITEMID>\
 <BC>'+ barcode + '</BC>\
-<CRDT>03/10/2012 09:43:52</CRDT>\
+<CRDT>'+date+'</CRDT>\
 <DST>0</DST>\
 <DELIV>'+ mesira + '</DELIV>\
 <USR>'+ USR + '</USR>\
@@ -165,17 +174,21 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
 <ACT>9</ACT>\
 <MEM>0</MEM>\
 <DEVKEY>9999</DEVKEY>\
-<FN>klj</FN>\
-<LN>jkl</LN>\
+<FN></FN>\
+<LN></LN>\
+<TYP>0</TYP>\
+<DST></DST>\
 <SIG>'+ sig + '</SIG>\
 <PH1>'+ ph1 + '</PH1>\
 <PH2>'+ ph2 + '</PH2>\
 <PH3>'+ ph3 + '</PH3>\
 <MEM></MEM>\
 <RQ></RQ>\
-<ORG></ORG>\
-<CRT></CRT>\
-<PLT></PLT>\
+<RQP>'+RQP+'</RQP>\
+<RQW>'+RQW+'</RQW>\
+<ORG>'+originalWeight+'</ORG>\
+<CRT>'+fixedWeight+'</CRT>\
+<PLT>'+isPalet+'</PLT>\
 </ITEM>\
 <BATCH></BATCH>\
 </DATA>\
@@ -199,36 +212,9 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
 
     //#region On Send To Server Request
 
-    function validateManaualCode(manualcode) {
-        //must have exactly 13 chars
-        //first 2 chars must be alphanumeric
-        //next 9 chars must be numeric
-        //last 2 chars must be letters
-        var errorManualCode1 = 'מספר התווים בברקוד חייב להיות בדיוק 13';
-        var errorManualCode2 = '2 התווים הראשונים חייבים להיות אלפא-נומריים';
-        var errorManualCode3 = '9 התווים האמצעיים חייבים להיות נומריים';
-        var errorManualCode4 = '2 התווים האחרונים חייבים להיות אותיות';
-        var errorMessageToDisplay = '';
-        var barcodeExpectedLength = 13;
-        var validated = true;
-        if (manualcode.length != barcodeExpectedLength)
-        { errorMessageToDisplay = errorManualCode1; validated = false; }
-        if (validated == true && (/[^a-zA-Z0-9]/.test(manualcode.substring(0, 2))))
-        { errorMessageToDisplay = errorManualCode2; validated = false; }
-        if (validated == true && isNaN(manualcode.substring(2, 11)))
-        { errorMessageToDisplay = errorManualCode3; validated = false; }
-        if (validated == true && !isNaN(manualcode.substring(11, 13)))
-        { errorMessageToDisplay = errorManualCode4; validated = false; }
-        if (validated == false) {
-            console.log('manual barcode error: ' + errorMessageToDisplay);
-            displayErrorMessage(errorMessageToDisplay);
-        }
-        return validated;
-    }
 
-    function displayErrorMessage(errorMessageToDisplay) {
-        navigator.notification.alert(errorMessageToDisplay);
-    }
+
+
 
     $scope.onOkPressed = function () {
         if (countPictures != pictures.length) {
@@ -242,14 +228,14 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
                     return;
                 }
             }
-      
+
             //var barCode = '01145543708IL';
             var kodmesira = $(".area").val();
             if (kodmesira == "-1") {
                 navigator.notification.alert('יש לבחור קוד מסירה');
             }
             else {
-                var isOk = validateManaualCode(barCode);
+                var isOk = validateManaualCode(currentBarcode);
                 if (isOk) {
                     var ph1 = '';
                     var ph2 = '';
@@ -269,7 +255,7 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
                             ph3 = pictures[i];
                         }
                     }
-                    var xml = CreateXml(sig, kodmesira, barCode, ph1, ph2, ph3);
+                    var xml = CreateXml(sig, kodmesira, currentBarcode, ph1, ph2, ph3, isPalet, fixedWeight, RQWGlobal);
                     makeDeliverRequest(xml);
                 }
             }
@@ -309,6 +295,15 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
                                     base64Signature = '';
                                     $(".packageinput2").val('');
                                     $("#warpPopup").load(location.href + " #warpPopup");
+                                    index = 0;
+                                    barcodes = [];
+                                    indexPic = 0;
+                                    pictures = [];
+                                    countPictures = 0;
+                                    fixedWeight = "0";
+                                    originalWeight = "0";
+                                    isPalet = "0";
+                                    RQWGlobal = "0";
                                 }
                                 else {
                                     navigator.notification.alert(message);
@@ -328,6 +323,7 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
 
     //#endregion AutoComplete JS
 
+    //#region On Check Barcode
     function CreateValidateBarcodeXML(kodMesira, barcode) {
         var date = getCurrentDate();
         var USRKEY = localStorage.getItem("USRKEY");
@@ -360,83 +356,102 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
     }
 
     $scope.onCheckBarCode = function () {
-        var barcode = $(".packageinput2").val();
-        //var barcode = '01145543708IL';
-
-        if (validateManaualCode(barcode)) {
-            var kodmesira = $(".area").val();
-            if (kodmesira == "-1") {
-                navigator.notification.alert("יש לבחור קוד מסירה");
-            }
-            else {
-                var xml = CreateValidateBarcodeXML(kodmesira, barcode);
-                var t = 10;
-                $
-               .ajax(
-                       {
-                           url: serverUrl,
-                           dataType: "xml",
-                           //dataType: 'json',
-                           type: "POST",
-                           async: false,
-                           contentType: "text/xml;charset=utf-8",
-                           headers: {
-                               "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
-                           },
-                           crossDomain: true,
-                           data: xml,
-                           timeout: 30000 //30 seconds timeout
-                       }).done(function (data) {
-                           if (data != null) {
-                               var parser = new DOMParser();
-                               var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.nodeValue, "text/xml");
-                               var result = xmlDoc.firstChild.firstChild.children[1].firstChild.innerHTML;
-                               var message = xmlDoc.firstChild.firstChild.children[1].children[1].innerHTML;
-                               if (result == "0") {
-
-                                   isBarcodeOk = true;
-                                   var RQW = xmlDoc.firstChild.firstChild.children[1].children[8].innerHTML;
-                                   var requestPics = xmlDoc.firstChild.firstChild.children[1].children[9].innerHTML;
-                                   if (requestPics == "1") {
-                                       var isph1 = xmlDoc.firstChild.firstChild.children[1].children[4].innerHTML;
-                                       var isph2 = xmlDoc.firstChild.firstChild.children[1].children[5].innerHTML;
-                                       var isph3 = xmlDoc.firstChild.firstChild.children[1].children[6].innerHTML;
-                                       if (isph1 == "1") {
-                                           countPictures++;
-                                       }
-                                       if (isph2 == "1") {
-                                           countPictures++;
-                                       }
-                                       if (isph3 == "1") {
-                                           countPictures++;
-                                       }
-                                       navigator.notification.alert("פריט מאושר");
-                                   }
-                                   if (RQW == "1") {
-                                       var ORG = xmlDoc.firstChild.firstChild.children[1].children[3].innerHTML;
-                                       location.href = "#/weightNormal/originalWeight/" + ORG + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures;
-                                   }
-
-                               }
-                               else {
-                                   navigator.notification.alert(message);
-                               }
-                           }
-                           else {
-
-
-                               navigator.notification.alert('יש תקלה בשרת');
-                           }
-
-                       }).fail(function (jqXHR, textStatus, thrownError) {
-                           navigator.notification.alert('Fail!');
-                       });
-            }
+        //var barcode = $(".packageinput2").val();
+        var barcode = 'EE135543749IL';
+        if (barcode.substring(0, 2) == "51" && barcode.substring(barcode.length - 2, barcode.length) == 17) {
+            navigator.notification.alert('איסוף פריט מסוג 51-17 יש לבצע בתפריט איסוף מחנות בלבד');
         }
         else {
+            if (validateManaualCode(barcode)) {
+                var kodmesira = $(".area").val();
+                if (kodmesira == "-1") {
+                    navigator.notification.alert("יש לבחור קוד מסירה");
+                }
+                else {
+                    var xml = CreateValidateBarcodeXML(kodmesira, barcode);
+                    var t = 10;
+                    $
+                   .ajax(
+                           {
+                               url: serverUrl,
+                               dataType: "xml",
+                               //dataType: 'json',
+                               type: "POST",
+                               async: false,
+                               contentType: "text/xml;charset=utf-8",
+                               headers: {
+                                   "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                               },
+                               crossDomain: true,
+                               data: xml,
+                               timeout: 30000 //30 seconds timeout
+                           }).done(function (data) {
+                               if (data != null) {
+                                   var parser = new DOMParser();
+                                   var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.nodeValue, "text/xml");
+                                   var result = xmlDoc.firstChild.firstChild.children[1].firstChild.innerHTML;
+                                   var message = xmlDoc.firstChild.firstChild.children[1].children[1].innerHTML;
+                                   if (result == "0") {
 
+                                       isBarcodeOk = true;
+                                       //var RQW = xmlDoc.firstChild.firstChild.children[1].children[8].innerHTML;
+                                       var RQW = "1";
+                                       var requestPics = xmlDoc.firstChild.firstChild.children[1].children[9].innerHTML;
+                                       if (requestPics == "1") {
+                                           var isph1 = xmlDoc.firstChild.firstChild.children[1].children[4].innerHTML;
+                                           var isph2 = xmlDoc.firstChild.firstChild.children[1].children[5].innerHTML;
+                                           var isph3 = xmlDoc.firstChild.firstChild.children[1].children[6].innerHTML;
+                                           if (isph1 == "1") {
+                                               countPictures++;
+                                           }
+                                           if (isph2 == "1") {
+                                               countPictures++;
+                                           }
+                                           if (isph3 == "1") {
+                                               countPictures++;
+                                           }
+
+                                           navigator.notification.alert("פריט מאושר");
+                                       }
+                                       if (RQW == "1") {
+                                           var ORG = xmlDoc.firstChild.firstChild.children[1].children[3].innerHTML;
+
+                                           //If item is EMS
+                                           if (barcode[0] == "E" && barcode[1] == "E") {
+                                               ORG = "75623";
+                                               location.href = "#/weightItem/originalWeight/" + ORG + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures;
+                                           }
+                                           else {
+                                               //for test:
+                                               ORG = "75623";
+                                               location.href = "#/weightNormal/originalWeight/" + ORG + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+
+                                           }
+                                       }
+
+                                   }
+                                   else {
+                                       navigator.notification.alert(message);
+                                   }
+                               }
+                               else {
+
+
+                                   navigator.notification.alert('יש תקלה בשרת');
+                               }
+
+                           }).fail(function (jqXHR, textStatus, thrownError) {
+                               navigator.notification.alert('Fail!');
+                           });
+                }
+
+            }
+            else {
+
+            }
         }
     };
+    //#endregion 
 
     //#region Camera Handler.
     $scope.onTakePicture = function () {
@@ -489,7 +504,7 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
     };
     //#endregion On Deliver Joined
 
-
+    //#region get kod mesira table
     function getKodMesiraTable(xml) {
         $
          .ajax(
@@ -510,26 +525,20 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
                            if (data != null) {
                                var parser = new DOMParser();
                                var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.nodeValue, "text/xml");
-                               var data = xmlDoc.firstChild.firstChild.children[1].firstChild.innerHTML;
-                               var children = data.children;
-                               for (var i = 0; i < children; i++) {
+                               var children = xmlDoc.firstChild.firstChild.children[1].firstChild.children;
+                               $('#mesiraSelect').append($('<option>', {
+                                   value: -1,
+                                   text: 'מסירה \ אי מסירה'
+                               }));
+                               for (var i = 0; i < children.length; i++) {
                                    var child = children[i];
-                               }
+                                   var value = child.children[0].innerHTML;
+                                   var text = child.children[1].innerHTML;
+                                   $('#mesiraSelect').append($('<option>', {
+                                       value: value,
+                                       text: text
+                                   }));
 
-                               var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
-                               var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
-
-                               if (result == "0") {
-                                   isBarcodeOk = false;
-                                   pictures = [];
-                                   currentBarcode = '';
-                                   $('.area').val('-1');
-                                   base64Signature = '';
-                                   $(".packageinput2").val('');
-                                   $("#warpPopup").load(location.href + " #warpPopup");
-                               }
-                               else {
-                                   navigator.notification.alert(message);
                                }
                            }
                            else {
@@ -542,8 +551,9 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
                            navigator.notification.alert('Fail!');
                        });
     }
+    //#endregion
 
-
+    //#region Create Tables XML
     function CreateTablesXML() {
         var date = getCurrentDate();
         var USRKEY = localStorage.getItem("USRKEY");
@@ -562,8 +572,7 @@ scotchApp.controller('deliverController', function ($scope, $routeParams) {
 </soapenv:Envelope>';
         return xml;
     }
-
-
+    //#endregion
 
 });
 

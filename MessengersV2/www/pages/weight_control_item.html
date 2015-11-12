@@ -37,16 +37,16 @@ $(function(){
     <input type="text" class="packageinput" name="packageNum" value="0132858IL"><br><br>
 
    	  <div>משקל מקורי<br>
-		<input type="text" name="kg" class="halfinputRight" placeholder="ק''ג"><span>.</span><input type="text" class="halfinputLeft" name="gram" placeholder="גרם">
+		<input type="text" name="kg" id="kgOrg" ng-model="kgOrg" class="halfinputRight" placeholder="ק''ג"><span>.</span><input type="text" id="grmOrg" class="halfinputLeft" ng-model="grmOrg" name="gram" placeholder="גרם">
       </div>
-      <div>משקל מקורי<br>
-		<input type="text" name="kg" class="halfinputRight" placeholder="ק''ג"><span>.</span><input type="text" class="halfinputLeft" name="gram" placeholder="גרם">
+      <div>משקל מתוקן<br>
+		<input type="text" name="kg" id="kgFixed"  ng-model="kgFixed" class="halfinputRight" placeholder="ק''ג"><span>.</span><input type="text" class="halfinputLeft" id="grmFixed" ng-model="grmFixed" name="gram" placeholder="גרם">
       </div>
 
   </form>
  
 </div>
-<div class="loginBtn"><a href="#">אישור</a></div>
+<div class="loginBtn" ng-click="onOk()"><a >אישור</a></div>
 </div>
 <!--Footer-->
 <div id="footer"></div>

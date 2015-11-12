@@ -4,13 +4,18 @@
     var barcode = "";
     var kodmesira = "";
     var countPictures = "";
+    var isPalet = "";
     angular.element(document).ready(function () {
-        originalWeghit = $routeParams.originalWeight;
-        barcode = $routeParams.barcode;
-        kodmesira = $routeParams.kodmesira;
-        countPictures = $routeParams.countPictures;
-        $("#packageinput").val(originalWeghit);
-        $(".packageinput4").val(barcode);
+        if ($routeParams.originalWeight) {
+            originalWeghit = $routeParams.originalWeight;
+            barcode = $routeParams.barcode;
+            kodmesira = $routeParams.kodmesira;
+            countPictures = $routeParams.countPictures;
+            isPalet = $routeParams.isPalet;
+        }
+
+        $("#packageinput").val(barcode);
+        $(".packageinput4").val(originalWeghit);
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
     });
@@ -21,7 +26,15 @@
             if (barcode != '' && originalWeghit != '') {
 
             }
-            window.location.href = "#/weightPallet";
+            if (originalWeghit != "") {
+                var select = "0";
+                isPalet = "0";
+                location.href = "#/weightPallet/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+            }
+            else {
+                window.location.href = "#/weightPallet";
+
+            }
         }
 
     });
@@ -55,7 +68,7 @@
                 navigator.notification.alert("יש לבחור משקל מתוקן");
             }
             else {
-                location.href = "#/deliver/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + select + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures;
+                location.href = "#/deliver/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + select + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
             }
         }
     };

@@ -87,33 +87,7 @@
         return str;
     };
 
-    function validateManaualCode(manualcode) {
-        //must have exactly 13 chars
-        //first 2 chars must be alphanumeric
-        //next 9 chars must be numeric
-        //last 2 chars must be letters
-        var errorManualCode1 = 'מספר התווים בברקוד חייב להיות בדיוק 13';
-        var errorManualCode2 = '2 התווים הראשונים חייבים להיות אלפא-נומריים';
-        var errorManualCode3 = '9 התווים האמצעיים חייבים להיות נומריים';
-        var errorManualCode4 = '2 התווים האחרונים חייבים להיות אותיות';
-        var errorMessageToDisplay = '';
-        var barcodeExpectedLength = 13;
-        var validated = true;
-        if (manualcode.length != barcodeExpectedLength)
-        { errorMessageToDisplay = errorManualCode1; validated = false; }
-        if (validated == true && (/[^a-zA-Z0-9]/.test(manualcode.substring(0, 2))))
-        { errorMessageToDisplay = errorManualCode2; validated = false; }
-        if (validated == true && isNaN(manualcode.substring(2, 11)))
-        { errorMessageToDisplay = errorManualCode3; validated = false; }
-        if (validated == true && !isNaN(manualcode.substring(11, 13)))
-        { errorMessageToDisplay = errorManualCode4; validated = false; }
-        if (validated == false) {
-            console.log('manual barcode error: ' + errorMessageToDisplay);
-            displayErrorMessage(errorMessageToDisplay);
-        }
-        return validated;
-    }
-
+ 
     $scope.onAddBarcode = function () {
         currentBarCode = $scope.inputVal;
         var isOk = validateManaualCode(currentBarCode);
