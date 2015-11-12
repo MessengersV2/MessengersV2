@@ -1,9 +1,6 @@
 ﻿var scotchApp = angular.module('scotchApp', ['ngRoute', 'ngAutocomplete']);
-
-// configure our routes
 scotchApp.config(function ($routeProvider) {
     $routeProvider
-
         // route for the home page
         .when('/', {
             templateUrl: 'pages/login.html',
@@ -89,3 +86,5 @@ scotchApp.config(function ($routeProvider) {
     ;
 
 });
+
+ 
