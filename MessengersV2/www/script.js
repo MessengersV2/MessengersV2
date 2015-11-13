@@ -61,6 +61,13 @@ scotchApp.config(function ($routeProvider) {
               controller: 'weightItemController'
           })
 
+         .when('/weightItem/barcode/:barcode', {
+             templateUrl: 'pages/weight_control_item.html',
+             controller: 'weightItemController'
+         })
+
+
+
      .when('/weightPallet', {
          templateUrl: 'pages/weight_control_plate.html',
          controller: 'weightPalletController'

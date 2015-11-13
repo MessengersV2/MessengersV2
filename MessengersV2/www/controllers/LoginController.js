@@ -127,7 +127,7 @@
                                      localStorage.setItem("NO_PH_BC_ENDING", NO_PH_BC_ENDING);
 
 
-                                     location.href = "#/collect";
+                                     location.href = "#/weightNormal";
                                  }
                              }
                              else {
