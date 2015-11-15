@@ -12,6 +12,17 @@
         console.log('XML SENDING TO LOGIN: ' + xml);
         return xml;
     }
+
+
+    function createBalanceXML(USRKEY, USR) {
+        var date = getCurrentDate();
+        var xml = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">   <soapenv:Header/>   <soapenv:Body>      <tem:ServerMessage>         <!--Optional:-->         <tem:xml><![CDATA[<DATA><MSG><HEADER><MSGVER>1</MSGVER><CODE>30</CODE><SENDTIME>'+date+'</SENDTIME><GPS/><USRKEY>'+USRKEY+'</USRKEY><DEVKEY>999999</DEVKEY><VER>4</VER></HEADER><DATA><LOCK>1</LOCK><USR>'+USR+'</USR></DATA></MSG></DATA>]]></tem:xml>      </tem:ServerMessage>   </soapenv:Body></soapenv:Envelope>';
+        console.log('XML SENDING TO LOGIN: ' + xml);
+        return xml;
+    }
+
+
+
     function getCurrentDate() {
         //04/11/2015 14:53:34
         var date = new Date();
@@ -37,8 +48,7 @@
         return str;
     };
     function login() {
-     
-        var userId = "038243549";
+         var userId = "038243549";
         //$("#username").val();
         var password = "123456";
         //$("#password").val();
@@ -126,7 +136,8 @@
                                      localStorage.setItem("NO_PH_SUG_MOZAR", NO_PH_SUG_MOZAR);
                                      localStorage.setItem("NO_PH_BC_ENDING", NO_PH_BC_ENDING);
 
-
+                                     // var xmlBalanace = createBalanceXML(USRKEY, USR);
+                                     //CheckBalance(xmlBalanace);
                                      location.href = "#/weightNormal";
                                  }
                              }
@@ -138,6 +149,42 @@
                              navigator.notification.alert('Fail!');
                          });
     }
+    function CheckBalance(xml) {
+        var t = 10;
+        $
+           .ajax(
+                         {
+                             url: serverUrl,
+                             dataType: "xml",
+                             //dataType: 'json',
+                             type: "POST",
+                             async: false,
+                             contentType: "text/xml;charset=utf-8",
+                             headers: {
+                                 "SOAPAction": "http://tempuri.org/IService1/ServerMessage"
+                             },
+                             crossDomain: true,
+                             data: xml,
+                             timeout: 30000 //30 seconds timeout
+                         }).done(function (data) {
+                             if (data != null) {
+                                 var parser = new DOMParser();
+                                 var xmlDoc = parser.parseFromString(data.firstChild.firstChild.firstChild.firstChild.firstChild.children[1].firstChild.nodeValue, "text/xml");
+                                 var tt = 10;
+                             }
+                             else {
+                                 navigator.notification.alert('יש תקלה בשרת');
+                             }
 
+                         }).fail(function (jqXHR, textStatus, thrownError) {
+                             navigator.notification.alert('Fail!');
+                         });
+    }
+
+
+
+    $(document).ready(function () {
+        $(".loadDiv").hide();
+    });
 });
 

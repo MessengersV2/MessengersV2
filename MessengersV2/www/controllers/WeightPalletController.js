@@ -30,6 +30,24 @@
         }
     }
   
+     $scope.$watch('value', function (value) {
+        if (value == 2) {
+            if (barcode != '' && originalWeghit != '') {
+
+            }
+            if (originalWeghit != "") {
+                var select = "0";
+                isPalet = "0";
+                location.href = "#/weightPallet/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+            }
+            else {
+                window.location.href = "#/weightPallet";
+
+            }
+        }
+
+    });
+
     //#region On Scan Barcode
     $scope.onScan = function () {
 

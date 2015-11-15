@@ -93,7 +93,8 @@
             }
         }
         else {
-            var barcodeNormal = $("#packageinput").val();
+           // var barcodeNormal = $("#packageinput").val();
+            barcodeNormal = "EE12345678912";
             if (barcodeNormal[0] == "E" && barcodeNormal[1] == "E") {
                 location.href = "#/weightItem/barcode/" + barcodeNormal;
             }

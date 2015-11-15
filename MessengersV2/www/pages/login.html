@@ -9,30 +9,36 @@
     <link href='http://fonts.googleapis.com/css?family=Arimo:400,700' rel='stylesheet' type='text/css'>
     <script src="../scripts/jquery-1.11.3.min.js"></script>
     <script src="../scripts/login.js"></script>
+    <style>
+     
+    </style>
 </head>
 <body class="home">
 
     <div class="gridContainer clearfix">
-      
-          <div class="fluid">
+
+        <div class="fluid">
 
             <div class="fluid"><div class="loginLogo"><img src="images/LogoRed.jpg" alt="" /></div></div>
             <div class="fluid">
                 <div class="loginFields">
                     <input type="text" class="userinput" id="username" name="username" placeholder="שם משתמש:">
                     <input type="password" class="passinput" id="password" name="password" placeholder="סיסמא:">
+                    <div class="loadDiv">
+                        <div class="loading"><img src="images/load.gif" alt="" /> </div>
+                    </div>
                     <div class="loginLinks">
                         <div class="loginLinksLeft"><a href="#">תמיכה</a></div>
                         <div class="loginLinksRight"><a href="#/resetPass">החלף סיסמה</a></div>
                     </div>
                     <div class="loginBtn"><a ng-click='login()'>כניסה</a></div>
                 </div>
-
             </div>
-
+            
         </div>
-  
-          
-      </div>
+    </div>
+
+
+    </div>
 </body>
 </html>
