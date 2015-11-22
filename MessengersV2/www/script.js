@@ -24,13 +24,13 @@ scotchApp.config(function ($routeProvider) {
          templateUrl: 'pages/collect_joined.html',
          controller: 'collect_joinedController'
      })
-     .when('/deliver', {
-         templateUrl: 'pages/deliver.html',
+     .when('/mesira_bdika', {
+         templateUrl: 'pages/mesira_bdika.html',
          controller: 'deliverController'
      })
-          .when('/deliver/originalWeight/:originalWeight/barcode/:barcode/fixedWeight/:fixWeight/kodmesira/:kodmesira/countPictures/:countPictures/isPalet/:isPalet', {
-              templateUrl: 'pages/deliver.html',
-              controller: 'deliverController'
+          .when('/mesira_takin/originalWeight/:originalWeight/barcode/:barcode/fixedWeight/:fixWeight/kodmesira/:kodmesira/countPictures/:countPictures/isPalet/:isPalet', {
+              templateUrl: 'pages/mesira_takin.html',
+              controller: 'mesiraTakinController'
           })
 
    .when('/deliverJoined', {

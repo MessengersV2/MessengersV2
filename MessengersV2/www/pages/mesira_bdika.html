@@ -1,0 +1,55 @@
+﻿<!doctype html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="">
+<!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2 מסירה</title>
+ 
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+ 
+  <script>
+ 
+</script>
+<body class="home">
+<div id="header"></div>
+<!--Content-->
+<script>
+		$(document).ready(function(){
+			$(".mainContent").css("height", window.innerHeight-($("#header").innerHeight()+160));
+		});
+		</script>
+ <div class="fluid topmenu">
+ <div class="topmenuItem topIcon5red active">מסירה</div>
+ <div class="topmenuItem topIcon6">מסירה מרוכזת</div>   
+</div>
+
+<div class="mainContent">
+
+<div class="BarcodeFields">
+<a ng-click="onScan()"><div class="BarcodeArea"></div></a>
+<form id="deliver">
+<div class="greyText2">* במידה והברקוד אינו קריא ניתן להקליד מספר פריט</div>
+    <input type="text" class="packageinput" name="packageNum" placeholder="הקלד מספר פריט"><br>
+     <select class="area short" name="area" id="mesiraSelect">
+          <option class="areainput">קוד מסירה / אי מסירה</option>
+          <option class="areainput">אופציה 1</option>
+          <option class="areainput">אופציה 2</option>
+          <option class="areainput">אופציה 3</option>
+        </select> 
+        <a ng-click="onCheckBarCode()"><img class="cameraBtn4" src="images/refreshIcon.jpg" alt=""/></a><br>
+       
+
+  </form>
+
+ 
+</div>
+<div class="loading2"><img src="images/load.gif" alt=""/></div>
+</div>
+<!--Footer-->
+<div id="footer"></div>

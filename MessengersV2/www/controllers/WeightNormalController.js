@@ -6,6 +6,7 @@
     var kodmesira = "";
     var countPictures = "";
     var isPalet = "";
+    var fixedWeight = '';
     //#endregion
 
     //#region On Angular Ready
@@ -85,16 +86,22 @@
 
         if (barcode != '' && originalWeghit != '') {
             var select = $(".area").val();
+            fixedWeight = select;
             if (select == "-1") {
                 navigator.notification.alert("יש לבחור משקל מתוקן");
             }
             else {
-                location.href = "#/deliver/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + select + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+                var selectedFixed = $(".area").val();
+                var original = $(".packageinput4").val();
+                if (original == '') {
+                    original = "0";
+                }
+                var xml = CreateXml(barcode, selectedFixed, original);
+                SendRequest(xml);
             }
         }
         else {
-           // var barcodeNormal = $("#packageinput").val();
-            barcodeNormal = "EE12345678912";
+            var barcodeNormal = $("#packageinput").val();
             if (barcodeNormal[0] == "E" && barcodeNormal[1] == "E") {
                 location.href = "#/weightItem/barcode/" + barcodeNormal;
             }
@@ -160,7 +167,13 @@
                                 var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
                                 var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
                                 if (result == "0") {
-                                    navigator.notification.alert( 'בקרת משקל בוצעה בהצלחה');
+                                    if (barcode != '' && originalWeghit != '') {
+                                        location.href = "#/mesira_takin/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + fixedWeight + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+
+                                    }
+                                    else {
+                                        navigator.notification.alert('בקרת משקל בוצעה בהצלחה');
+                                    }
                                 }
                                 else {
                                     navigator.notification.alert(message);

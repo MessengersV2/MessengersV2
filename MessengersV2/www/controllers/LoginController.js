@@ -138,7 +138,7 @@
 
                                      // var xmlBalanace = createBalanceXML(USRKEY, USR);
                                      //CheckBalance(xmlBalanace);
-                                     location.href = "#/weightNormal";
+                                     location.href = "#/mesira_bdika";
                                  }
                              }
                              else {

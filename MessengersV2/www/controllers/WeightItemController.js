@@ -25,7 +25,7 @@
         }
         $("#header").load("pages/header.html");
         $("#footer").load("pages/footer.html");
-       
+
         $.sidr('close', 'simple-menu');
         $('input').on('keyup', function (e) {
             var theEvent = e || window.event;
@@ -41,36 +41,42 @@
 
     $scope.onOk = function () {
         if (originalWeight != null) {
-        if ($("#kgFixed").val() == '') {
-            navigator.notification.alert('יש להזין ק"ג מתוקן');
-        }
-        else if ($("#grmFixed").val() == '') {
-            navigator.notification.alert('יש להזין גרם מתוקן');
-        }
-        else {
-            var MAX_EE_WT = localStorage.getItem("MAX_EE_WT");
-            var select = $("#kgFixed").val() + $("#grmFixed").val();
-            var selectToChecl = $("#kgFixed").val();
-            if (MAX_EE_WT < selectToChecl) {
-                navigator.notification.alert("משקל שהוקלד גדול מהמשקל המותר");
+            if ($("#kgFixed").val() == '') {
+                navigator.notification.alert('יש להזין ק"ג מתוקן');
+            }
+            else if ($("#grmFixed").val() == '') {
+                navigator.notification.alert('יש להזין גרם מתוקן');
             }
             else {
-                if (select.length > 5) {
-                    select = select[0] + select[1] + select[2] + select[3] + select[4];
+                var MAX_EE_WT = localStorage.getItem("MAX_EE_WT");
+                var cureentBarcode = $('.packageinput').val();
+                var originalW = $("#kgOrg").val() + $("#grmOrg").val();
+                var select = $("#kgFixed").val() + $("#grmFixed").val();
+                var selectToChecl = $("#kgFixed").val();
+                if (MAX_EE_WT < selectToChecl) {
+                    navigator.notification.alert("משקל שהוקלד גדול מהמשקל המותר");
                 }
                 else {
-                    while (select.length != 5) {
-                        select = select + "0";
+                    if (select.length > 5) {
+                        select = select[0] + select[1] + select[2] + select[3] + select[4];
                     }
-                }
-                var isPalet = "0";
-                location.href = "#/deliver/originalWeight/" + originalWeight + "/barcode/" + currentBarcode + "/fixedWeight/" + select + "/kodmesira/" + kodMesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+                    else {
+                        while (select.length != 5) {
+                            select = select + "0";
+                        }
+                    }
+                    var isPalet = "0";
 
+                    fixedWeight = select;
+                    var xml = CreateXml(currentBarcode, select, originalW);
+
+                    SendRequest(xml);
+
+                }
             }
         }
-        }
         else {
-           
+
             if ($("#kgFixed").val() == '' || $("#grmFixed").val() == '') {
                 navigator.notification.alert("חובה להכניס משקל מתוקן")
             }
@@ -163,7 +169,13 @@
                                 var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
                                 var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
                                 if (result == "0") {
-                                    navigator.notification.alert('בקרת משקל בוצעה בהצלחה');
+                                    if (originalWeight != null) {
+                                        var isPalet = 0;
+                                        location.href = "#/mesira_takin/originalWeight/" + originalWeight + "/barcode/" + currentBarcode + "/fixedWeight/" + fixedWeight + "/kodmesira/" + kodMesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+                                    }
+                                    else {
+                                        navigator.notification.alert('בקרת משקל בוצעה בהצלחה');
+                                    }
                                 }
                                 else {
                                     navigator.notification.alert(message);

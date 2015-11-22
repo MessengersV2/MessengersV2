@@ -21,7 +21,9 @@
         {
             var select = "0";
             isPalet = "1";
-            location.href = "#/deliver/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + select + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+            var currentBarcode = $("#packageinput").val();
+            var xml = CreateXml(currentBarcode);
+            SendRequest(xml);
         }
         else{
             var currentBarcode = $("#packageinput").val();
@@ -38,7 +40,7 @@
             if (originalWeghit != "") {
                 var select = "0";
                 isPalet = "0";
-                location.href = "#/weightPallet/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
+                location.href = "#/weightNormal/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
             }
             else {
                 window.location.href = "#/weightPallet";
@@ -128,7 +130,8 @@
                                 var result = xmlDoc.firstChild.firstChild.children[1].firstChild.children[1].innerHTML;
                                 var message = xmlDoc.firstChild.firstChild.children[1].firstChild.children[2].innerHTML;
                                 if (result == "0") {
-                                    navigator.notification.alert( 'בקרת משקל בוצעה בהצלחה');
+                                    var select = "0";
+                                    location.href = "#/mesira_takin/originalWeight/" + originalWeghit + "/barcode/" + barcode + "/fixedWeight/" + select + "/kodmesira/" + kodmesira + "/countPictures/" + countPictures + "/isPalet/" + isPalet;
                                 }
                                 else {
                                     navigator.notification.alert(message);
